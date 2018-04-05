@@ -9,14 +9,11 @@
     
 ## 运行项目
 * 下载项目之后，需要安装包的依赖
-  ```npm 
    $ npm install
-   * 如果想要查看项目效果，需要手动build，然后点击生成的dist文件夹中的index.html即可
-```npm 
+* 如果想要查看项目效果，需要手动build，然后点击生成的dist文件夹中的index.html即可
    $ npm run build
 * 如果想依据webpack实现代码热更新，使用dev环境
- ```npm 
- $npm run dev
+   $npm run dev
  
 ## 结束语
   目前项目还在初期设计以及构建当中，如果您有对项目好的意见，或者对技术方面的指点，请随时与我沟通，[crazyjialin@foxmail.com](crazyjialin@foxmail.com) ，非常感谢您的支持！
