@@ -20,11 +20,6 @@
       Header,
       Content
     },
-    data() {
-        return {
-          
-        }
-      }, 
     methods: {
         foldHeader(){
             if($('.el-header').hasClass('active')){
@@ -54,7 +49,8 @@
     left: 0;
     right: 0;
     z-index: 9;
-    transition: all 1s ease;
+    transition: all .8s ease;
+    -webkit-transition: all .8s ease;
   }
  .el-header.active{
   height: 50px !important;
@@ -71,7 +67,8 @@
     text-align: center;
     line-height: 160px;
     padding: 50px 20px 0;
-    transition: all 1s ease;
+    transition: all .8s ease;
+    -webkit-transition: all .8s ease;
   }
   .el-main.active{
     padding-top: 5px;
