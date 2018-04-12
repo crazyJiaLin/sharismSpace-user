@@ -17,7 +17,7 @@
             return{
                 routerList : [
                     {title:'博客管理',link:'/blog'},
-                    {title:'日志管理',link:'/journal'},
+                    // {title:'日志管理',link:'/journal'},
                     {title:'相册管理',link:'/album'},
                     {title:'文件管理',link:'/file'},
                     {title:'网站收藏',link:'/website'}

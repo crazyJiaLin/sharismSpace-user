@@ -39,7 +39,7 @@
                                 </el-form>
                             </div>
                         </div>
-                        <el-menu-item v-for="(item2,key2) in item.value" :index="item2.blogType+'+'+key" :blogtypeid="item2.id">
+                        <el-menu-item v-for="(item2,key2) in item.value" :index="item2.blogType+'+'+key" :blogtypename="item2.blogType" :blogtypeid="item2.id">
                             {{item2.blogType}}
                             <i @click.stop.prevent="eidtBlogType($event)" class="manage-blog-type-btn eidt-blog-type-btn fa fa-edit"></i>
                             <i @click.stop.prevent="deleteBlogType($event)" class="manage-blog-type-btn delete-blog-type-btn fa fa-trash-o"></i>
@@ -82,14 +82,20 @@
             eidtBlogType($event){       //修改二级分类名
                 let that = this;
                 let parentDOM = $($event.target).parent('.el-menu-item');
+                let editClassify = parentDOM.parents('.el-submenu').find('.el-submenu__title span').html()
                 let queryId = $(parentDOM).attr('blogtypeid');
+                let oldBlogTypeName = $(parentDOM).attr('blogtypename');
                 // let blogTypeName = $(parentDOM).find('.blog-type-name').html();
                 this.$prompt('请输入分类名称名称', '重命名', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
+                inputValue : oldBlogTypeName,   //显示初始文本
                 inputPattern:  /^.{1,10}$/,
                 inputErrorMessage: '长度在1~10之间哦 ^8^'
                 }).then(({ value }) => {
+                    if(value == oldBlogTypeName){
+                        return;
+                    }
                     var map = {};
                     //要更新的分类id 必填
                     map['id']= queryId;
@@ -109,6 +115,11 @@
                             // console.log(data)
                             if(data.code == 1){
                                 that.getBlogType(); //修改完成后，重新获取文章列表信息  
+                                let newBlogType = {
+                                    classify : editClassify,
+                                    blogType : value
+                                };
+                                that.$emit('changeBlogType',newBlogType);    //向父级发送修改博客列表信息的请求
                                 that.$message({
                                     type: 'success',
                                     message: '修改文集名称成功'
@@ -134,7 +145,6 @@
                 let that = this;
                 let parentDOM = $($event.target).parent('.el-menu-item');
                 let queryId = $(parentDOM).attr('blogtypeid');
-                // console.log(queryId);
                 that.$confirm('为了您的操作更加安全，我们将再您删除本分类后将文章放入回收站 ', '警告', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -160,6 +170,11 @@
                                     message: '删除分类成功'
                                 });   
                                 that.getBlogType();
+                                let newBlogType = {
+                                    classify : '',
+                                    blogType : ''
+                                };
+                                that.$emit('changeBlogType',newBlogType);    //向父级发送修改博客列表信息的请求，这里是删除，删除后请求全部数据，将blogType变为空值
                             }else{
                                 that.$message.error(data,message);  
                             }
@@ -188,8 +203,12 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     inputPattern:  /^.{1,10}$/,
+                    inputValue : oldFoldName,
                     inputErrorMessage: '长度在1~10之间哦 ^8^'
                     }).then(({ value }) => {
+                        if(value == oldFoldName){
+                            return;
+                        }
                         // console.log('修改一级标题'+value);   //value为输入框内容
                         var map = {};
                         //要更新哪一个分类名称
