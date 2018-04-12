@@ -20,6 +20,11 @@
       Header,
       Content
     },
+    data() {
+        return {
+          
+        }
+      }, 
     methods: {
         foldHeader(){
             if($('.el-header').hasClass('active')){

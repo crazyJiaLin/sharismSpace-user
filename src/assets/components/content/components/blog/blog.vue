@@ -25,7 +25,7 @@
         background: tan;
     }
     .children-router-view-enter-active{
-        animation: fadeIn 1s ease;
+        animation: fadeIn .5s ease;
     }
     
 </style>

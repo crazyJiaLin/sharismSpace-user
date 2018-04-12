@@ -1,0 +1,47 @@
+.upload-img-wrapper-wrapper{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: rgba(0,0,0,.2);
+    z-index: 9999;
+}
+.upload-img-wrapper{
+    width: 650px;
+    height: auto;
+    /* padding: 0 10px; */
+    overflow: hidden;
+    background: #fff;
+    margin: 150px auto 0;
+    border-radius: 10px;
+    box-shadow: 2px 2px 20px 0 rgba(0,0,0,.3);
+}
+.upload-img-wrapper-title{
+    height: 30px;
+    line-height: 40px;
+    text-align: left;
+    position: relative;
+}
+.upload-img-wrapper-title span{
+    padding-left: 18px;
+    font-weight: 400;
+    font-size: 1.1.em;
+    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+}
+.upload-img-wrapper-title button{
+    font-size: 18px;
+    top: 12px;
+}
+
+/* 覆盖原组件样式 */
+.upload_main{
+    border: 0;
+}
+.upload_box{
+    margin-bottom: 0;
+}
+.upload_preview{
+    border: 0;
+}

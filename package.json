@@ -8,6 +8,7 @@
     "build": "rimraf dist && webpack -p --progress --hide-modules"
   },
   "dependencies": {
+    "babel-plugin-transform-remove-strict-mode": "0.0.2",
     "element-ui": "^2.2.2",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1"
@@ -17,8 +18,10 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.6.0",
-    "babel-core": "^6.24.1",
-    "babel-loader": "^6.4.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
     "babel-preset-vue-app": "^1.2.0",
     "css-loader": "^0.27.0",
     "file-loader": "^0.10.1",

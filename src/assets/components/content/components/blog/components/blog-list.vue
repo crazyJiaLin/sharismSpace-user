@@ -1,7 +1,8 @@
 <template>
-    <div class="second-chilren-router-wrapper">
-        <!-- 左侧博客列表 -->
-        <BlogNav @blogTypeInfo="setClassify($event)"></BlogNav>
+    <div class="sec-router-wrapper">
+        <div class="second-chilren-router-wrapper">
+<!-- 左侧博客列表 -->
+        <BlogNav @blogTypeInfo="setClassify($event)" @changeBlogType="getBlogListWithChange($event)"></BlogNav>
         <div class="second-chilren-router-left-wrapper">
             <div class="blog-list-wrapper">
                 <ul class="blog-list"  v-loading="blogListLoading">
@@ -80,10 +81,12 @@
                 <div @click="foldUserInfo" class="hide-user-info-btn"><i class="fa fa-angle-double-right"></i></div>
             </div>
             <div class="add-blog-btn-wrapper">
-                <el-button class="add-blog-btn" type="primary" round>发布博客</el-button>
+                <el-button class="add-blog-btn" type="primary" round>  <a href="#/blog/add">发布博客</a> </el-button>
             </div>
             
         </div>
+        </div>
+        
     </div>
 </template>
 
@@ -110,7 +113,7 @@
                     endRow : 0,
                     pageNum : 1,                //当前页号
                     hasNextPage : true,
-                    pageSize : 5,
+                    pageSize : 6,
                     remove : 0,                 //查询已经删除的博客（回收站）时  remove=1， 不加默认都查询
                     nature : '',                //根据博客性质查询
                     classify : '',               //一级分类
@@ -141,6 +144,13 @@
                 this.blogListInfo.blogType = msg.blogType;
                 this.getBlogList();
                 // this.
+            },
+            getBlogListWithChange(msg){
+                // 根据博客导航子组件的变化来重新获取博客列表信息
+                console.log(msg);
+                this.blogListInfo.classify = msg.classify;
+                this.blogListInfo.blogType = msg.blogType;
+                this.getBlogList();
             },
             setUserPortrait(){      //设置用户头像
                 $('.user-portrait-wrapper').css('backgroundImage','url("'+ this.blogUserInfo.iconPath  +'")');
