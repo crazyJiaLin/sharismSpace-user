@@ -1,0 +1,11 @@
+diff a/.babelrc b/.babelrc	(rejected hunks)
+@@ -1,3 +1,6 @@
+ {
+-  "presets": ["vue-app"]
+-}
++  "presets": ["vue-app"],
++  "ignore": [
++    "./src/assets/Ueditor/ueditor.all.js"
++  ]
++}
+\ No newline at end of file

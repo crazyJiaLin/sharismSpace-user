@@ -1,6 +1,3 @@
 {
-  "presets": ["vue-app"],
-  "ignore": [
-    "./src/assets/Ueditor/ueditor.all.js"
-  ]
+  "presets": ["vue-app"]
 }

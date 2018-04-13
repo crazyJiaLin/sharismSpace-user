@@ -54,14 +54,22 @@ const router = new VueRouter({
     {path:'*',redirect:'/blog/list'}
   ]
 })
+// router.beforeEach(function(to,from ,next){
+//   console.log(to);
+//   console.log(from);
+//   console.log(next);
+// })
 new Vue({
   el: '#app',
   router,
   watch : {
 		$route : function(to,from){
+      // console.log(to);
+      // console.log(from);
       if(to.path == '/blog'){
         window.location.hash = '/blog/list';
       }
+      // if()
     }
 	},
   render: h => h(App)
