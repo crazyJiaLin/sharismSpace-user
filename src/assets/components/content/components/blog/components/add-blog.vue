@@ -1,6 +1,6 @@
 <template>
     <div class="sec-router-wrapper">
-        <div class="second-chilren-router-wrapper">
+        <div class="second-chilren-router-wrapper-add-blog">
             <div class="second-chilren-router-left-wrapper ">
                 <div class="edit-blog-wrapper-wrapper">
                     <div class="edit-blog-wrapper">
@@ -19,15 +19,26 @@
                 </div>
             </div>
             <div class="second-chilren-router-right-wrapper">
+                <div class="back-to-blog-list-wrapper">
+                    <el-button type="primary" round>返回博客列表</el-button>
+                </div>
                 <div class="select-add-option-wrapper animated swing">
                     <el-form ref="submitBlogForm" :model="submitBlogForm" label-width="80px">
                         <el-form-item label="公开">
                             <el-col :span="4">
                                 <el-switch v-model="submitBlogForm.public"></el-switch>
+                            </el-col> 
+                            <el-col :span="8">
+                                <el-form-item label="支持打赏">
+                                    <el-switch v-model="submitBlogForm.reward"></el-switch>
+                                </el-form-item>
+                            </el-col> 
+                            <el-col :span="6" :offset="2">
+                                <el-select size="small" v-model="submitBlogForm.nature" placeholder="请选择">
+                                    <el-option label="原创" value="原创"></el-option>
+                                    <el-option label="转载" value="转载"></el-option>
+                                </el-select>
                             </el-col>    
-                            <el-col :span="4" :offset="8">
-                                <el-button @click="submitBlogToDraft" :loading="submitBlogForm.isSaveDraft" size="small"><el-badge :hidden="hiddenSaveDraftBadge" is-dot class="item">保存到草稿</el-badge></el-button>
-                            </el-col>                            
                         </el-form-item>
                         <el-form-item label="分类选择">
                             <el-row :gutter="20">
@@ -44,22 +55,33 @@
                                     <el-autocomplete
                                         v-model="submitBlogForm.blogType"
                                         :fetch-suggestions="searchBlogType"
-                                        placeholder="请输入文集名称"
+                                        placeholder="请输入博客类别"
                                         @select="selectClassify"
                                     ></el-autocomplete>
                                 </el-col>       
                             </el-row>
                         </el-form-item>
                         <el-form-item>
+                                <el-row :gutter="20">
+                                    <el-col :span="9" >
+                                        <el-button @click="createNewBlog" >新建博客</el-button>
+                                    </el-col>
+                                    <el-col :span="9">
+                                        <el-badge :hidden="hiddenSaveDraftBadge" is-dot class="item"><el-button type="primary" plain  @click="submitBlogToDraft" :loading="submitBlogForm.isSaveDraft">保存草稿</el-button></el-badge>
+                                    </el-col>
+                                </el-row>
+                            </el-form-item>
+                        <el-form-item>
                             <el-row :gutter="20">
-                                <el-col :span="10">
-                                    <el-button>预览</el-button>
+                                <el-col :span="9">
+                                    <el-button>博客预览</el-button>
                                 </el-col>    
-                                <el-col :span="10">
-                                        <el-button type="primary" :loading="submitBlogForm.isSending" @click="createBlog">发布博客</el-button>
+                                <el-col :span="9">
+                                    <el-button type="primary" :loading="submitBlogForm.isSending" @click="createBlog">发布博客</el-button>
                                 </el-col>       
                             </el-row>
                         </el-form-item>
+                        
                     </el-form>
                     <el-collapse>
                         <el-collapse-item title="草稿箱" name="1" class="draft-wrapper">
@@ -72,6 +94,7 @@
                         </el-collapse-item>
                     </el-collapse>
                 </div>
+
             </div>
         </div>
         
@@ -85,7 +108,7 @@
                 classifyList: [],
                 blogTypeList : [],
                 draftBlogList : [],
-                hiddenSaveDraftBadge : false,   //是否隐藏保存草稿箱的小圆点
+                hiddenSaveDraftBadge : true,   //是否隐藏保存草稿箱的小圆点
             　  editor: null,
                 submitBlogForm: {   //发布博客内容
                     blogId : '',
@@ -94,16 +117,67 @@
                     isSaveDraft : false,
                     public: true,
                     draft : 0,
+                    nature : '原创',
                     blogTitle : '',
                     titleIcon : '',
                     baseBlog : '',
                     blog : '',
                     classify : '',
-                    blogType : ''
+                    blogType : '',
+                    reward : true   //1支持打赏，0不打赏
                 }
             } 
         },
+        watch:{
+            'submitBlogForm.blogTitle'(val,oldVal){
+                this.hiddenSaveDraftBadge = false;
+            },
+            'submitBlogForm.public'(val,oldVal){
+                this.hiddenSaveDraftBadge = false;
+            },
+            'submitBlogForm.reward'(val,oldVal){
+                this.hiddenSaveDraftBadge = false;
+            },
+            'submitBlogForm.nature'(val,oldVal){
+                this.hiddenSaveDraftBadge = false;
+            },
+            'submitBlogForm.blog'(val,oldVal){
+                this.hiddenSaveDraftBadge = false;
+            },
+            'submitBlogForm.classify'(val,oldVal){
+                this.hiddenSaveDraftBadge = false;
+            },
+            'submitBlogForm.blogType'(val,oldVal){
+                this.hiddenSaveDraftBadge = false;
+            }
+        },
         methods : {
+            createNewBlog(){    //新建博客
+                console.log('新建博客');
+                let that = this;
+                if(!that.hiddenSaveDraftBadge){ //如果有小圆点，提示用户先保存现有的博客
+                    return that.$confirm('您还有没有保存的博客，请把现在的博客存入草稿在新建博客哦 ʚتɞ', '提示', {
+                        confirmButtonText: '现在保存',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                        }).then(() => {
+                            that.submitBlogToDraft();
+                        }).catch(() => {
+                        that.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });          
+                    });
+                }
+                that.submitBlogForm.blogId = '';
+                that.submitBlogForm.draft = 0;
+                that.submitBlogForm.nature = '原创';
+                that.submitBlogForm.blogTitle = '';
+                that.submitBlogForm.titleIcon = '';
+                that.submitBlogForm.classify = '';
+                that.submitBlogForm.blogType = '';
+                that.editor.setContent('');
+            },
             createBlog() {      //发布博客入口函数
                 let that = this;
                 that.submitBlogForm.draft = 0;
@@ -145,6 +219,7 @@
                     data : formData,
                     success:function(data){	    
                         // console.log(data);  
+                        that.hiddenSaveDraftBadge = true;  //将保存到草稿按钮的小圆点去掉
                         if(data.code == 1 || data.code == 2){
                             //创建完分类后判断是发布博客还是修改博客
                             if(that.submitBlogForm.blogId == ''){   //没有博客id，说明需要发布博客
@@ -171,9 +246,11 @@
                     blogType : that.submitBlogForm.blogType,
                     baseBlog : that.submitBlogForm.baseBlog,
                     blog : that.submitBlogForm.blog,
-                    blog : that.submitBlogForm.blog,
-                    privacySet : that.submitBlogForm.public ? 1 : 0
+                    draft : that.submitBlogForm.draft,
+                    privacySet : that.submitBlogForm.public ? 1 : 0,
+                    reward : that.submitBlogForm.reward ? 1 : 0
                 };
+                console.log('发布到草稿箱还是主列表？'+ that.submitBlogForm.draft);
                 var formData=new FormData();
                 formData.append("updateBlogInfoMap",JSON.stringify(map));
                 $.ajax({
@@ -185,6 +262,7 @@
                     data : formData,
                     success:function(data){	   
                         if(data.code == 1){
+                            
                             if(that.submitBlogForm.draft == 1){ //存入草稿
                                 //将id设置为草稿id
                                 that.$message({
@@ -192,6 +270,7 @@
                                     message: '存入草稿箱成功'
                                 });
                                 that.submitBlogForm.isSaveDraft = false;     //取消存入草稿按钮loading
+                                that.hiddenSaveDraftBadge = true;
                                 that.getDraftBlog();    //保存草稿后，重新获取草稿箱列表
                             }else{                              //发布博客
                                 that.$message({
@@ -199,7 +278,9 @@
                                     message: '发布博客成功'
                                 });
                                 that.submitBlogForm.isSending =false;   //取消发布博客按钮loading
+                                that.hiddenSaveDraftBadge = true;
                                 //发布成功后，在这这里进行跳转到详情页面
+                                that.getDraftBlog();    //保存草稿后，重新获取草稿箱列表
                             }
                         } else{
                             that.$message.error(data.message);
@@ -226,7 +307,8 @@
                     baseBlog : that.submitBlogForm.baseBlog,        //基本内容（前200个字）字数待定
                     blog : that.submitBlogForm.blog,                //内容
                     draft : that.submitBlogForm.draft,              //存放位置  1 存在草稿箱   0 移出草稿箱
-                    privacySet : that.submitBlogForm.public ? 1 : 0 //权限（公开隐藏）1公开  0隐藏
+                    privacySet : that.submitBlogForm.public ? 1 : 0, //权限（公开隐藏）1公开  0隐藏
+                    reward : that.submitBlogForm.reward ? 1 : 0 //权限（公开隐藏）1公开  0隐藏
                 };
                 var formData=new FormData();
                 formData.append("blogMap",JSON.stringify(map));
@@ -296,6 +378,7 @@
                             that.submitBlogForm.classify = data.value.classify;
                             that.submitBlogForm.blogType = data.value.blogType;
                             that.submitBlogForm.public = data.value.privacySet==1 ? true : false;
+                            that.submitBlogForm.reward = data.value.reward==1 ? true : false;
                             //将博客文本添加到富文本中
                             // that.editor.ready(function() {
                                 that.editor.setContent(that.submitBlogForm.blog);
@@ -314,30 +397,41 @@
                 let that = this;
                 var queryId = $($event.target).parent('li').attr('blogid');
                 console.log(queryId);
-                //支持批量删除，id用逗号隔开，英文状态下的逗号。
-                var ids= queryId;
-                var formData=new FormData();
-                formData.append("blogArrayList",ids);
-                $.ajax({
-                    type: "post",  
-                    url: window.blogReqUrl + "/blog/deleteBlog",
-                    contentType: false,            
-                    processData: false, //必须false才会自动加上正确的Content-Type
-                    dataType: 'json',
-                    data : formData,
-                    success:function(data){	
-                        console.log(data)
-                        if(data.code == 1){
-                            that.$message({
-                                type: 'success',
-                                message: '删除草稿成功'
-                            });
-                            that.getDraftBlog();    //删除完草稿后，重新获取草稿箱数据
-                        }
-                    }, 				 
-                    error:function(){  
-                        that.$message.error("服务器开小差了~稍后重试 ^8^");  
-                    }  
+                //询问框
+                that.$confirm('此操作将永久删除该草稿, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var ids= queryId;
+                    var formData=new FormData();
+                    formData.append("blogArrayList",ids);
+                    $.ajax({
+                        type: "post",  
+                        url: window.blogReqUrl + "/blog/deleteBlog",
+                        contentType: false,            
+                        processData: false, //必须false才会自动加上正确的Content-Type
+                        dataType: 'json',
+                        data : formData,
+                        success:function(data){	
+                            console.log(data)
+                            if(data.code == 1){
+                                that.$message({
+                                    type: 'success',
+                                    message: '删除草稿成功'
+                                });
+                                that.getDraftBlog();    //删除完草稿后，重新获取草稿箱数据
+                            }
+                        }, 				 
+                        error:function(){  
+                            that.$message.error("服务器开小差了~稍后重试 ^8^");  
+                        }  
+                    });
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
                 });
 
             },
@@ -451,11 +545,20 @@
                     }  
                 });
 
+            },
+            bindRouterPreventEvent(){
+                $('.personnal-header .nav-wrapper').on('click',function(ev){
+                    console.log(ev);
+                });
             }
         },
         mounted(){
+            let that = this;
             this.editor = UE.getEditor('editor');   //实例化富文本
             this.getDraftBlog();
+            this.editor.addListener("contentChange",function(){ //监听富文本内容变化，将保存到草稿按钮加上小圆点
+                that.submitBlogForm.blog = that.editor.getContent();
+            });
         },
         destroyed() {
             this.editor.destroy();
