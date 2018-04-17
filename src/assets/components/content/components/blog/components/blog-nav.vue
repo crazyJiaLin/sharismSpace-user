@@ -443,7 +443,7 @@
                 $('.blog-nav-wrapper').addClass('active');
                 $('.second-chilren-router-wrapper').addClass('show-blog-nav');
                 $('.show-blog-nav-btn i').addClass('fa-rotate-180');
-            },800);
+            },100);
             this.getBlogType();      //获取博客分类
             this.bindaddBlogTypeEvent();  //绑定二级分类折叠按钮
         }

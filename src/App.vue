@@ -70,7 +70,7 @@
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 160px;
+    /* line-height: 160px; */
     padding: 50px 20px 0;
     transition: all .8s ease;
     -webkit-transition: all .8s ease;
