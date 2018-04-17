@@ -1,7 +1,7 @@
 <template>
     <div class="sec-router-wrapper">
         <div class="second-chilren-router-wrapper">
-<!-- 左侧博客列表 -->
+        <!-- 左侧博客列表 -->
         <BlogNav @blogTypeInfo="setClassify($event)" @changeBlogType="getBlogListWithChange($event)"></BlogNav>
         <div class="second-chilren-router-left-wrapper">
             <div class="blog-list-wrapper">

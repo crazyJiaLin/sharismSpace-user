@@ -7,6 +7,7 @@ import App from './App.vue'
 // 全局地址请求
 window.blogReqUrl = 'http://118.25.48.91:8080/blog_server-0.0.1-SNAPSHOT';   //博客系统服务器地址
 window.userReqUrl = 'http://118.25.47.192:8080/user_server-0.0.1-SNAPSHOT';   //用户系统服务器地址
+window.albumReqUrl = 'http://118.25.48.91:8080/album_server-0.0.1-SNAPSHOT';  //相册系统服务器地址
 
 // CSS
 import './assets/css/reset.css'                 //全局css
@@ -34,8 +35,9 @@ Vue.use(VueRouter);
 import Blog from './assets/components/content/components/blog/blog.vue'
 import BlogList from './assets/components/content/components/blog/components/blog-list.vue'
 import AddBlog from './assets/components/content/components/blog/components/add-blog.vue'
-// import Journal from './assets/components/content/components/journal/journal.vue'
 import Album from './assets/components/content/components/album/album.vue'
+import AlbumList from './assets/components/content/components/album/album-list.vue'
+import AlbumDetail from './assets/components/content/components/album/album-detail.vue'
 import File from './assets/components/content/components/file/file.vue'
 import Website from './assets/components/content/components/website/website.vue'
 
@@ -48,7 +50,10 @@ const router = new VueRouter({
       {path:'/blog/add',component:AddBlog}
     ] },
     // { path: '/journal', component: Journal },
-    { path: '/album', component: Album },
+    { path: '/album', component: Album ,children:[
+      {path:'/album/list',component:AlbumList},
+      {path:'/album/detail/:name',component:AlbumDetail}
+    ] },
     { path: '/file', component: File },
     { path: '/website', component: Website },
     {path:'*',redirect:'/blog/list'}
@@ -68,6 +73,9 @@ new Vue({
       // console.log(from);
       if(to.path == '/blog'){
         window.location.hash = '/blog/list';
+      }
+      if(to.path == '/album'){
+        window.location.hash = '/album/list';
       }
       // if()
     }

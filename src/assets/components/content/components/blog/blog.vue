@@ -6,14 +6,6 @@
     </div>
 </template>
 
-<script>
-    export default{
-        mounted(){
-
-        }
-    }
-</script>
-
 <style>
     .router-view-wrapper{
         width: 100%;

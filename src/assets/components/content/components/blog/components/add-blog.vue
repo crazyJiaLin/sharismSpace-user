@@ -20,7 +20,7 @@
             </div>
             <div class="second-chilren-router-right-wrapper">
                 <div class="back-to-blog-list-wrapper">
-                    <el-button type="primary" round>返回博客列表</el-button>
+                    <el-button type="primary" round> <a href="#/blog/list">返回博客列表</a></el-button>
                 </div>
                 <div class="select-add-option-wrapper animated swing">
                     <el-form ref="submitBlogForm" :model="submitBlogForm" label-width="80px">
@@ -47,7 +47,7 @@
                                     <el-autocomplete
                                         v-model="submitBlogForm.classify"
                                         :fetch-suggestions="searchClassify"
-                                        placeholder="请输入文集名称"
+                                        placeholder="文集名称"
                                         @select="selectClassify"
                                     ></el-autocomplete>
                                 </el-col>    
@@ -55,7 +55,7 @@
                                     <el-autocomplete
                                         v-model="submitBlogForm.blogType"
                                         :fetch-suggestions="searchBlogType"
-                                        placeholder="请输入博客类别"
+                                        placeholder="博客类别"
                                         @select="selectClassify"
                                     ></el-autocomplete>
                                 </el-col>       
@@ -543,12 +543,6 @@
                     error:function(){  
                         that.$message.error("服务器开小差了~稍后重试 ^8^");  
                     }  
-                });
-
-            },
-            bindRouterPreventEvent(){
-                $('.personnal-header .nav-wrapper').on('click',function(ev){
-                    console.log(ev);
                 });
             }
         },
