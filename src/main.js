@@ -5,9 +5,10 @@ import './assets/js/jquery-3.3.1.js'
 import App from './App.vue'
 
 // 全局地址请求
-window.blogReqUrl = 'http://118.25.48.91:8080/blog_server-0.0.1-SNAPSHOT';   //博客系统服务器地址
-window.userReqUrl = 'http://118.25.47.192:8080/user_server-0.0.1-SNAPSHOT';   //用户系统服务器地址
-window.albumReqUrl = 'http://118.25.48.91:8080/album_server-0.0.1-SNAPSHOT';  //相册系统服务器地址
+window.blogReqUrl = 'http://www.sharismspace.com/blog_server-0.0.1-SNAPSHOT';   //博客系统服务器地址
+window.userReqUrl = 'http://www.sharismspace.com/user_server-0.0.1-SNAPSHOT';   //用户系统服务器地址
+window.albumReqUrl = 'http://www.sharismspace.com/album_server-0.0.1-SNAPSHOT';  //相册系统服务器地址
+window.fileReqUrl = 'http://www.sharismspace.com/file_server-0.0.1-SNAPSHOT';   //文件系统服务器地址
 
 // CSS
 import './assets/css/reset.css'                 //全局css
