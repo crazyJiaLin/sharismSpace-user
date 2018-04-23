@@ -53,7 +53,7 @@ const router = new VueRouter({
     // { path: '/journal', component: Journal },
     { path: '/album', component: Album ,children:[
       {path:'/album/list',component:AlbumList},
-      {path:'/album/detail/:name',component:AlbumDetail}
+      {path:'/album/detail/:albumName',component:AlbumDetail}
     ] },
     { path: '/file', component: File },
     { path: '/website', component: Website },

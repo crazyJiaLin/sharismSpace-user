@@ -8,7 +8,7 @@
                 <div class="favorite-album-icon-wrapper"><span class="animated fadeIn">我的最爱</span><i class="fa fa-heartbeat"></i></div>
                 <div class="img-list-wrapper"><img src="./images/studio_0002.jpg" /></div>
             </div>
-            <div v-for="(item,key) in albumList" :albumid="item.id" :key="key" class="album-box albums-tab-thumb sim-anim-1 animated pulse">
+            <div @click.stop.parent="showPhotoList($event)" v-for="(item,key) in albumList" :albumname="item.albumName" :albumid="item.id" :key="key" class="album-box albums-tab-thumb sim-anim-1 animated pulse">
                 <div class="img-list-wrapper"><img src="./images/studio_0001.jpg" /></div>
                 <div class="img-list-wrapper"><img src="./images/studio_0002.jpg" /></div>
                 <div class="img-list-wrapper"><img src="./images/studio_0003.jpg" /></div>
@@ -16,7 +16,7 @@
                 <div class="img-list-wrapper"><img :src="item.iconPath" /></div>
                 <div class="album-title-wrapper animated fadeIn">
                     <div class="album-setting">
-                        <el-dropdown @command="handleAlbumManage" trigger="click">
+                        <el-dropdown  @command="handleAlbumManage" trigger="hover">
                             <span class="el-dropdown-link">
                                 <i class="fa fa-cog"></i>
                             </span>
@@ -242,6 +242,14 @@
             }
         },
         methods : {
+            showPhotoList($event){
+                if($($event.target).parents('.album-setting').length == 0){ //判断，如果不是setting按钮，跳转到详情
+                    // var queryId = $($event.target).parents('.album-box ').attr('albumid');
+                    var albumName = $($event.target).parents('.album-box ').attr('albumname');
+                    window.location.hash = '#/album/detail/'+albumName;
+                }
+                
+            },
             handleAlbumManage(command,$event){
                 let queryId = $($event.$el).attr('albumid');
                 if(command == 'rename'){
@@ -298,7 +306,33 @@
                     type: 'warning'
                 }).then(() => {
                     console.log('删除相册');
-                                       
+                    var albumId = queryId;
+                    var formData=new FormData();
+                    formData.append("albumId",albumId);
+                    $.ajax({
+                        type: "post",  		   
+                        url: window.albumReqUrl + "/album/deleteAlbumById",
+                        contentType: false, 
+                        processData: false,
+                        dataType: 'json',
+                        data : formData,
+                        success:function(data){	
+                            console.log(data)
+                            if(data.code == 1){
+                                that.$message({
+                                    type : 'success',
+                                    message : '删除相册成功'
+                                });
+                                that.getAlbumList();    //重新获取相册列表
+                            }else{
+                                that.$message.error(data.message);  
+                            }
+                        }, 				 
+                        error:function(){  
+                            that.$message.error("服务器开小差了~稍后重试 ^8^");  
+                        }  
+                    });
+                  
                 }).catch(() => {
                 });
             },
@@ -614,12 +648,21 @@
                 $('.album-icon-file-input').off('change').on('change',function(){
                     console.log(this);
                 });
+            },
+            stopSettingBtnPropagation(){
+                // console.log( $('.album-folder-list-wrapper').find('.album-setting'));
+                // $('.album-folder-list-wrapper').on('click','.album-setting',function(ev){
+                //     ev.stopPropagation();
+                //     ev.preventDefault();
+                //     console.log(this);
+                // });
             }
         },
         mounted(){
             this.getAlbumList();    //获取相册列表
             this.bindAlbumListScrollEvent();    //绑定相册列表滚动事件，实现按需加载
             this.bindAlbumIconFileChangeEvent();    //给上传封皮input监听change事件，显示预览图
+            this.stopSettingBtnPropagation();   //组织设置按钮冒泡
         }
     }
 </script>
