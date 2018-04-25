@@ -20,6 +20,7 @@ window.Cascade = (function(window,$){
             this.itemWidth = options.itemWidth; //item元素宽度
             this.marginLeft = options.marginLeft; 
             this.marginTop = options.marginTop; 
+            this.speed = options.speed; //图片运动速度
 
             //通过获取的参数设置全局变量
             this.wrapperWidth = this.cascadeWrapper.outerWidth();   //父容器的宽度
@@ -68,7 +69,7 @@ window.Cascade = (function(window,$){
                     opacity : 1,
                     top : 0,
                     left : that.initLeft + index*(that.itemWidth + that.marginLeft)
-                },300,function(){   //动画速度300毫秒，运动结束后进行下一个运动
+                },that.speed,function(){   //动画速度300毫秒，运动结束后进行下一个运动
                     // console.log('第一行');
                     that.compareArr.push(index);
                     return that.resetCascade(++index,callback);
@@ -108,7 +109,7 @@ window.Cascade = (function(window,$){
                     opacity : 1,
                     top : curTop + 'px',
                     left : positionLeft
-                },300,function(){
+                },that.speed,function(){
                     // console.log('第'+index+'个');
                     that._replaceElementFromArr(that.compareArr,oldIndex,index);
                     return that.resetCascade(++index,callback);
@@ -134,7 +135,7 @@ window.Cascade = (function(window,$){
                         opacity : 1,
                         top : 0,
                         left : that.initLeft + index*(that.itemWidth + that.marginLeft)
-                    },300,function(){   //动画速度300毫秒，运动结束后进行下一个运动
+                    },that.speed,function(){   //动画速度300毫秒，运动结束后进行下一个运动
                         // console.log('第一行');
                         that.compareArr.push(index);
                         return that.arrangeDOM(++index,callback);
@@ -176,7 +177,7 @@ window.Cascade = (function(window,$){
                         opacity : 1,
                         top : curTop + 'px',
                         left : positionLeft
-                    },300,function(){
+                    },that.speed,function(){
                         // console.log('第'+index+'个');
                         that._replaceElementFromArr(that.compareArr,oldIndex,index);
                         return that.arrangeDOM(++index,callback);

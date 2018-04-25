@@ -1,29 +1,44 @@
-/* .album-list-wrapper{
-    padding-bottom: 40px;
+/* 相片排序 */
+/* .sort-photo-wrapper{
+    width: 400px;
+    height: 100%;
+    line-height: 40px;
+    float: right;
+    background: teal;
 } */
+
+/* 相册详情子路由 */
 .album-second-router-wrapper{
     height: auto;
-}
-/* .album-children-router{
-    height: 100%;
-} */
-.photo-list-wrapper{
-    width: 100%;
-    height: 800px;
-    /* overflow-y: auto; */
-    /* background: tan; */
-    position: relative;
-    /* padding-bottom: 10px; */
-    transition: all .5s ease;
     overflow: hidden;
 }
 
-.photo-item-wrapper{
-    
-   
+.photo-list-wrapper{
+    width: 100%;
+    height: 800px;
+    position: relative;
+    transition: all .5s ease;
+    padding-bottom: 10px;
+}
+
+
+.photo-item-wrapper.add-photo-wrapper{
+    width: 250px;
+    height: 220px;
+    line-height: 220px;
+    border: 1px dashed #ccc;
+    font-size: 60px;
+    cursor: pointer;
+    color: #ccc;
+    transition: all .5s ease;
+}
+.photo-item-wrapper.add-photo-wrapper:hover{
+    color: #666;
+    border-color: #409EFF;
+}
+.photo-item-wrapper{   
     background: #fff;
     box-sizing: border-box;
-    /* padding: 5px 3px 3px; */
     position: absolute;
     top: 0;
     left: 0;

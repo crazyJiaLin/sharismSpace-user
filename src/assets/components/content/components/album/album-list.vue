@@ -227,17 +227,17 @@
                     loadingHTML : '<i class="fa fa-circle-o-notch fa-spin"></i>'
                 },
                 albumList : [
-                    {
-                        id : "",
-                        albumIcon : "default",
-                        albumName : "相册名称",
-                        albumPassword : "",
-                        albumSort : "相册分类",
-                        createDate : "2018-04-13",
-                        description : "相册描述",
-                        iconPath : '',
-                        privacySet : 1
-                    }
+                    // {
+                    //     id : "",
+                    //     albumIcon : "default",
+                    //     albumName : "相册名称",
+                    //     albumPassword : "",
+                    //     albumSort : "相册分类",
+                    //     createDate : "2018-04-13",
+                    //     description : "相册描述",
+                    //     iconPath : '',
+                    //     privacySet : 1
+                    // }
                 ]
             }
         },

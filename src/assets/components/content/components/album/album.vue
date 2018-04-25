@@ -7,6 +7,9 @@
                         <el-breadcrumb separator="/" separator-class="el-icon-arrow-right">
                             <el-breadcrumb-item v-for="(item,key) in breadcrumbList" :to="item.path">{{item.breadcrumb}}</el-breadcrumb-item>
                         </el-breadcrumb>
+                        <!-- <div class="sort-photo-wrapper">
+                            sort-photo
+                        </div> -->
                     </div>
                     <div class="album-second-router-wrapper">
                         <transition name="album-children-router-view" class="animated">

@@ -1,7 +1,10 @@
 <template>
-    <div class="album-children-router">
-       <div class="photo-list-wrapper" id="cascade-wrapper">
-           <div v-for="(item,key) in photoList" class="photo-item-wrapper">
+    <div class="album-children-router" v-loading="photoReqInfo.cascadeWrapperLoading">
+       <div class="photo-list-wrapper" id="cascade-wrapper" >
+           <div @click="showAddPhotoDialog = true" class="photo-item-wrapper add-photo-wrapper">
+                <i class="fa fa-plus"></i>
+           </div>
+           <div v-for="(item,key) in photoList" :key="key" class="photo-item-wrapper">
                <div class="img-wrapper">
                     <img :src="item.photoPath" :alt="item.photoName">
                </div>
@@ -15,36 +18,32 @@
                </div>
             </div>
        </div>
+        <UploadImg v-if="showAddPhotoDialog" @closeUploadWrapper="closeUploadImg($event)"></UploadImg>
     </div>
 </template>
 
 <script>
     import './album-detail.css'
     import '../../../../js/cascade.js'
+    import UploadImg from '../../../upload/upload-img.vue'
     export default{
+        components : {
+            UploadImg
+        },
         computed:{
            albumName(){
                return this.$route.params.albumName;
            }
         },
-        watch : {
-            photoList : {
-                handler(val,oldVal){
-                    let that = this;
-                    
-                    //监听到数组变化时，开始进行瀑布流排序
-                    
-                },
-                deep : true
-            }
-        },
         data(){
             return{
                 Cascade : null, 
+                showAddPhotoDialog : false,  //是否显示添加照片模态框
                 photoList : [
                     // {id:'0',albumId:'1',photoName:'照片名称',photoDescribe:'相册描述',photoPath:'http://118.25.50.160:8000/group2/M00/00/01/CpqBPFrR_3yAbC1fAADZNcoHNMg432.jpg'}
                 ],
                 photoReqInfo : {
+                    cascadeWrapperLoading : false,
                     getPhotoListBool : false,
                     hasNextPage : true,
                     pageNum : 1,
@@ -53,6 +52,11 @@
             }
         },
         methods : {
+            closeUploadImg(msg){
+                console.log('关闭了');
+                console.log(msg);
+                this.showAddPhotoDialog = false;
+            },
             selectAlbumByName(){
                 let that = this;
                 // console.log('开始检索');
@@ -78,8 +82,9 @@
                             console.log(data)
                             if(data.code == 1){
                                 that.photoList = data.value.list;
-                                that.photoReqInfo.hasNextPage = data.value.hasNextPage;
-                                that.photoReqInfo.pageSize = that.photoReqInfo.pageSize + 8;     
+                                that.photoReqInfo.hasNextPage = data.value.hasNextPage; 
+                                that.photoReqInfo.pageSize = that.photoReqInfo.pageSize + 8;    //请求内容+8 
+                                that.photoReqInfo.cascadeWrapperLoading = false; //关闭loading   
                                 that.Cascade.arrangeDOM(0,function(msg){
                                     console.log(msg);
                                     that.photoReqInfo.getPhotoListBool = true;  //排序完成后，打开请求开关
@@ -113,7 +118,7 @@
                     
                 });
             },
-            bindScrollEvent(){
+            bindScrollEvent(){          //绑定滚动事件，滚动到页面底部触发请求照片事件
                 let that = this;
                 $('.blog-list-wrapper').on('scroll',function(){
                     // console.log('scroll');
@@ -127,9 +132,13 @@
                     // console.log(dis);
                     if(dis <= 20){
                         if(!that.photoReqInfo.hasNextPage){    //如果没有下一页，不再发送请求
-                            return;
+                            return that.$message({
+                                type : 'info',
+                                message : ' 您没有更多照片了哦，马上点击添加按钮，添加您的照片吧'
+                            });
                         }
                         console.log('开始发送请求');
+                        that.photoReqInfo.cascadeWrapperLoading = true; //打开页面loading
                         that.photoReqInfo.getPhotoListBool = false;    //关闭请求开关，等数据返回后在吧开关打开，防止请求重复
                         that.selectAlbumByName();
                     }
@@ -142,11 +151,12 @@
         mounted(){
             //实例化瀑布流组件
             this.Cascade = new Cascade({
-                cascadeWrapper : '#cascade-wrapper',
-                itemSelector : '.photo-item-wrapper',
-                itemWidth : 250,
-                marginLeft : 20,
-                marginTop : 20
+                cascadeWrapper : '#cascade-wrapper',    //父容器，需要根据父容器宽度进行排序
+                itemSelector : '.photo-item-wrapper',   //item选择器，是cascadeWrapper下的子标签
+                itemWidth : 250,    //item宽度
+                marginLeft : 20,    //每个item左右边距
+                marginTop : 25,     //每个item上下边距
+                speed : 150         //瀑布流运动素的，毫秒
             });
             // this.arrangePhoto();
             this.selectAlbumByName();
