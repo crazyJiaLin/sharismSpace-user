@@ -22,13 +22,16 @@
     import './core/jq22.js'
     export default{
         data(){
-            return{}
+            return{
+                uploadImgList : []
+            }
         },
         methods : {
             closeUploadWrapper(){
                 this.$emit('closeUploadWrapper',true);
             },
             newUploadInstance(){
+                let that = this;
                 // 初始化插件
                 $("#demo").zyUpload({
                     width            :   "650px",                 // 宽度
@@ -48,23 +51,40 @@
                         // console.info(allFiles);
                     },
                     onDelete: function(file, surplusFiles){                     // 删除一个文件的回调方法
+                        // file代表删除的文件，surplusFiles代表剩下的文件
                         // console.info("当前删除了此文件222：");
-                        // console.info(file);
-                        // console.info("当前剩余的文件222：");
-                        // console.info(surplusFiles);
+                        // console.info(file.name);
+                        for(let i=0; i<that.uploadImgList.length; i++){
+                            if(that.uploadImgList[i].title == file.name){
+                                that.uploadImgList.splice(i,1);  //删除数组中的这一项
+                                break;
+                            }
+                        }
                     },
                     onSuccess: function(file,response){                    // 文件上传成功的回调方法
                         console.info("此文件上传成功：");
                         console.info(file);
                         console.info(response);
+                        that.uploadImgList.push(JSON.parse(response));
                     },
                     onFailure: function(file){                    // 文件上传失败的回调方法
                         console.info("此文件上传失败：");
                         console.info(file);
                     },
-                    onComplete: function(responseInfo){           // 上传完成的回调方法
-                        // console.info("文件上传完成");
+                    onComplete: function(responseInfo){           // 所有文件上传完成的回调方法
+                        // console.info("外部complet函数收到参数"+responseInfo);
+                        that.$message({
+                            type : 'success',
+                            message : '全部上传成功'
+                        });
                         // console.info(responseInfo);
+                    },
+                    onEnd : function(msg){      //组件内部点击结束上传时的回调函数
+                        // console.log(that.uploadImgList);
+                        that.$emit('uploadEnd',that.uploadImgList); //将当前上传成功的图片信息返回到父组件
+                    },
+                    onAlert : function(msg){    //组件内部回调弹窗函数，用vue实现良好的提示
+                        that.$message.error(msg);
                     }
                 });
             }

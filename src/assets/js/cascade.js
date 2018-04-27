@@ -3,6 +3,17 @@
  * author : cjl
  * Last-Update-Date : 2018-4-23
  */
+// 实例化代码
+ //实例化瀑布流组件
+//  this.Cascade = new Cascade({
+//     cascadeWrapper : '#cascade-wrapper',    //父容器，需要根据父容器宽度进行排序
+//     itemSelector : '.photo-item-wrapper',   //item选择器，是cascadeWrapper下的子标签
+//     itemWidth : 250,    //item宽度
+//     marginLeft : 20,    //每个item左右边距
+//     marginTop : 25,     //每个item上下边距
+//     resetSpeed : 150,         //重新排布瀑布流运动速度，毫秒
+//     arrangeSpeed : 150,        //开始排布瀑布流运动速度，毫秒
+// });
 window.Cascade = (function(window,$){
     
     function Obj(options){
@@ -20,7 +31,8 @@ window.Cascade = (function(window,$){
             this.itemWidth = options.itemWidth; //item元素宽度
             this.marginLeft = options.marginLeft; 
             this.marginTop = options.marginTop; 
-            this.speed = options.speed; //图片运动速度
+            this.resetSpeed = options.resetSpeed;       //重新排布瀑布流运动速度，毫秒
+            this.arrangeSpeed = options.arrangeSpeed; //开始排布瀑布流运动速度，毫秒
 
             //通过获取的参数设置全局变量
             this.wrapperWidth = this.cascadeWrapper.outerWidth();   //父容器的宽度
@@ -69,7 +81,7 @@ window.Cascade = (function(window,$){
                     opacity : 1,
                     top : 0,
                     left : that.initLeft + index*(that.itemWidth + that.marginLeft)
-                },that.speed,function(){   //动画速度300毫秒，运动结束后进行下一个运动
+                },that.resetSpeed,function(){   //动画速度300毫秒，运动结束后进行下一个运动
                     // console.log('第一行');
                     that.compareArr.push(index);
                     return that.resetCascade(++index,callback);
@@ -109,7 +121,7 @@ window.Cascade = (function(window,$){
                     opacity : 1,
                     top : curTop + 'px',
                     left : positionLeft
-                },that.speed,function(){
+                },that.resetSpeed,function(){
                     // console.log('第'+index+'个');
                     that._replaceElementFromArr(that.compareArr,oldIndex,index);
                     return that.resetCascade(++index,callback);
@@ -135,7 +147,7 @@ window.Cascade = (function(window,$){
                         opacity : 1,
                         top : 0,
                         left : that.initLeft + index*(that.itemWidth + that.marginLeft)
-                    },that.speed,function(){   //动画速度300毫秒，运动结束后进行下一个运动
+                    },that.arrangeSpeed,function(){   //动画速度300毫秒，运动结束后进行下一个运动
                         // console.log('第一行');
                         that.compareArr.push(index);
                         return that.arrangeDOM(++index,callback);
@@ -177,7 +189,7 @@ window.Cascade = (function(window,$){
                         opacity : 1,
                         top : curTop + 'px',
                         left : positionLeft
-                    },that.speed,function(){
+                    },that.arrangeSpeed,function(){
                         // console.log('第'+index+'个');
                         that._replaceElementFromArr(that.compareArr,oldIndex,index);
                         return that.arrangeDOM(++index,callback);

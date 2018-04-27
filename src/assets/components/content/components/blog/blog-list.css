@@ -129,6 +129,8 @@
     width: 100%;
     height: auto;
     line-height: 30px;
+    text-decoration: none;
+    color: #555;
 }
 .blog-list .blog-item .blog-title{
     line-height: 30px;

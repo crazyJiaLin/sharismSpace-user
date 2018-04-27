@@ -42,6 +42,23 @@ import AlbumDetail from './assets/components/content/components/album/album-deta
 import File from './assets/components/content/components/file/file.vue'
 import Website from './assets/components/content/components/website/website.vue'
 
+//自定义过滤器，取得字符串前10位
+Vue.filter('sliceStr10', function(value) {
+  value = value.toString()
+  if(value.length >= 10){
+    console.log('字符串大于十个过滤'+value);
+    return value.substring(0,10) + '...';
+  }
+  return value;
+});
+
+Vue.filter('filterTime', function(value) {
+  value = value.toString()
+  if(value.length >= 10){
+    return value.substring(0,10);
+  }
+  return value;
+})
 
 
 const router = new VueRouter({
