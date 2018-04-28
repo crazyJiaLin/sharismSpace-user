@@ -10,6 +10,17 @@ window.userReqUrl = 'http://www.sharismspace.com/user_server-0.0.1-SNAPSHOT';   
 window.albumReqUrl = 'http://www.sharismspace.com/album_server-0.0.1-SNAPSHOT';  //相册系统服务器地址
 window.fileReqUrl = 'http://www.sharismspace.com/file_server-0.0.1-SNAPSHOT';   //文件系统服务器地址
 
+window.debounce = function(action,idle){      //节流函数,挂在到window对象上
+  var last
+  return function(){
+      var ctx = this, args = arguments
+      clearTimeout(last)
+      last = setTimeout(function(){
+          action.apply(ctx, args)
+      }, idle)
+  }
+};
+
 // CSS
 import './assets/css/reset.css'                 //全局css
 import 'element-ui/lib/theme-chalk/index.css'   
@@ -43,10 +54,10 @@ import File from './assets/components/content/components/file/file.vue'
 import Website from './assets/components/content/components/website/website.vue'
 
 //自定义过滤器，取得字符串前10位
-Vue.filter('sliceStr10', function(value) {
-  value = value.toString()
-  if(value.length >= 10){
-    console.log('字符串大于十个过滤'+value);
+Vue.filter('filterPhotoName', function(value) {
+  value = value.toString().slice(0,value.lastIndexOf('.'));
+  if(value.length > 10){
+    // console.log('字符串大于十个过滤'+value);
     return value.substring(0,10) + '...';
   }
   return value;

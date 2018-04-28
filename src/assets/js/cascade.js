@@ -49,7 +49,9 @@ window.Cascade = (function(window,$){
         },
         resetCascade(index,callback){
             let that = this;
+            that.photoList = that.cascadeWrapper.find(that.itemSelector);   //获取子元素
             if(index == 0){ //如果是第一次，将所有类名去掉,重新获取宽度以及初始化参数
+                // console.log(that.photoList);
                 //通过获取的参数设置全局变量
                 that.wrapperWidth = that.cascadeWrapper.outerWidth();   //父容器的宽度
                 that.colCount = Math.floor(that.wrapperWidth/(that.itemWidth + that.marginLeft));    //每行应该放几个
@@ -84,6 +86,7 @@ window.Cascade = (function(window,$){
                 },that.resetSpeed,function(){   //动画速度300毫秒，运动结束后进行下一个运动
                     // console.log('第一行');
                     that.compareArr.push(index);
+                    // console.log(that.compareArr)
                     return that.resetCascade(++index,callback);
                 });
             }else{  //第二到最后，开始设置top
@@ -101,22 +104,10 @@ window.Cascade = (function(window,$){
                         positionLeft = that.photoList.eq(that.compareArr[i]).position().left;
                     }
                 }
+                
                                         
                 // console.log(oldIndex);
                 let curTop = minHeight + that.marginTop;     //当前插入元素应该设置的top
-                //最后判断一下新添加元素和最大高度谁大，
-                // let latestDOMHeight = curTop + that.photoList.eq(index).outerHeight();
-                // console.log(latestDOMHeight,maxHeight);
-                // if(latestDOMHeight > maxHeight){
-                //     maxHeight = latestDOMHeight;
-                //     let wrapperCurHeight = that.cascadeWrapper.outerHeight();
-                //     if(maxHeight > wrapperCurHeight){
-                //         that.cascadeWrapper.css({
-                //             height : maxHeight + 'px'
-                //         });
-                //     }
-                    
-                // }
                 that.photoList.eq(index).addClass('reset').animate({   //通过获取的这些参数，给当前DOM设置位置
                     opacity : 1,
                     top : curTop + 'px',

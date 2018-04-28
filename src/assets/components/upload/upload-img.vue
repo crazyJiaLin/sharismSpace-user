@@ -1,5 +1,5 @@
 <template>
-    <div class="upload-img-wrapper-wrapper aimated zoomIn"> 
+    <div class="upload-img-wrapper-wrapper"> 
         <!-- 外部调用方式 -->
         <!-- <UploadImg v-if="showUploadImg" @closeUploadWrapper="closeUploadImg($event)"></UploadImg> -->
         <div class="upload-img-wrapper">

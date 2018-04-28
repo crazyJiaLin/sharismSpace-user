@@ -3,9 +3,9 @@
        <div class="photo-list-wrapper" id="cascade-wrapper" >
            <div @click="showAddPhotoDialog = true" class="photo-item-wrapper add-photo-wrapper">
                 <i class="fa fa-plus"></i>
-           </div>
-           <div v-for="(item,key) in photoList" :id="item.id" :albumid="item.albumId" :key="key" class="photo-item-wrapper">
-               <div class="delete-photo-btn" @click="deletePhoto($event)">
+           </div> 
+           <div @click.stop.prevent="showPhotoDetail($event)" v-for="(item,key) in photoList" :key="key" :photoindex="key" class="photo-item-wrapper" :id="item.id" :albumid="item.albumId">
+               <div class="delete-photo-btn" @click.stop="deletePhoto($event)">
                    <i class="fa fa-close"></i>
                </div>
                <div class="photo-wrapper">
@@ -13,17 +13,18 @@
                         <img :src="item.photoPath" :alt="item.photoName">
                     </div>
                     <div class="img-detail-wrapper">
-                        <div class="photo-name">{{item.photoName | sliceStr10}}</div>
+                        <div class="photo-name" :title="item.photoName">{{item.photoName | filterPhotoName}}</div>
                         <div class="photo-info-wrapper">
-                            <i class="fa fa-thumbs-up"></i> 22
-                            <i class="fa fa-heart"></i> 5
+                            <i class="fa fa-thumbs-up"></i> {{item.praiseAmount}} &nbsp;
+                            <i class="fa fa-heart"></i> {{item.collectAmount}}
                         </div>
                         <div class="add-time">{{item.addTime | filterTime}}</div>
                     </div>
                </div>
             </div>
        </div>
-        <UploadImg v-loading="uploadImgLoading" v-if="showAddPhotoDialog" @closeUploadWrapper="closeUploadImg($event)" @uploadEnd="uploadEnd($event)"></UploadImg>
+       <PhotoDetail v-if="showPhotoDetailWrapper" :show-photo-detail-info="showPhotoDetailInfo" @closeDetailWrapper="closeDetailWrapper($event)" class="animated fadeIn"></PhotoDetail>
+        <UploadImg class="animated fadeIn" v-loading="uploadImgLoading" v-if="showAddPhotoDialog" @closeUploadWrapper="closeUploadImg($event)" @uploadEnd="uploadEnd($event)"></UploadImg>
     </div>
 </template>
 
@@ -31,9 +32,11 @@
     import './album-detail.css'
     import '../../../../js/cascade.js'
     import UploadImg from '../../../upload/upload-img.vue'
+    import PhotoDetail from './photo-detail.vue'
     export default{
         components : {
-            UploadImg
+            UploadImg,
+            PhotoDetail
         },
         computed:{
            albumName(){
@@ -42,10 +45,17 @@
         },
         data(){
             return{
+                showPhotoDetailInfo : {
+                    queryId : '',   //照片id
+                    photoIndex : 1, //照片索引
+                    albumName : this.$route.params.albumName  //相册名称
+                },
+                showPhotoDetailWrapper : false,
                 Cascade : null, 
                 showAddPhotoDialog : false,  //是否显示添加照片模态框
-                uploadImgLoading : false,
-                isRemindNoMoreImg : false,  //是否已经提示了没有更多照片了
+                uploadImgLoading : false,   //上传图片的加载
+                isRemindNoMoreImg : false,  //是否已经提示了没有更多照片了,
+                windowWidth : $(window).outerWidth(),
                 photoList : [
                     // {id:'0',albumId:'1',photoName:'照片名称',photoDescribe:'相册描述',photoPath:'http://118.25.50.160:8000/group2/M00/00/01/CpqBPFrR_3yAbC1fAADZNcoHNMg432.jpg'}
                 ],
@@ -56,10 +66,23 @@
                     pageNum : 1,
                     pageSize : 10
                 },
-                // uploadImgList : []
             }
         },
         methods : {
+            closeDetailWrapper(msg){
+                // console.log(msg);
+                this.showPhotoDetailWrapper = false;
+            },
+            showPhotoDetail($event){    //点击查看照片详情
+                let parentDOM = $($event.target).parents('.photo-item-wrapper');
+                this.showPhotoDetailInfo.queryId = parentDOM.attr('id');
+                this.showPhotoDetailInfo.photoIndex = parseInt(parentDOM.attr('photoindex'))+1;
+                // this.showPhotoDetailInfo.wrapperWidth = parentDOM.outerWidth();
+                // this.showPhotoDetailInfo.wrapperHeight = parentDOM.outerHeight();
+                // this.showPhotoDetailInfo.left = parentDOM.position().left;
+                // this.showPhotoDetailInfo.top = parentDOM.position().top;
+                this.showPhotoDetailWrapper = true; //显示照片详情
+            },
             deletePhoto($event){    //删除照片
                 let that = this;
                 this.$confirm('确定要删除此照片?', '提示', {
@@ -67,6 +90,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
+                    that.photoReqInfo.cascadeWrapperLoading = true;
                     let albumId = $($event.target).parents('.photo-item-wrapper').attr('albumid');
                     // console.log(albumId);    //相册id
                     let delId = $($event.target).parents('.photo-item-wrapper').attr('id');
@@ -93,6 +117,7 @@
                                 that.selectAlbumByName(function(){  //重新获取图片信息，通过传入回调函数，让此次请求来执行重新排序，而不是arrange
                                     let timer = setTimeout(function(){
                                         that.Cascade.resetCascade(0,function(){
+                                            that.photoReqInfo.cascadeWrapperLoading = false;
                                             that.photoReqInfo.getPhotoListBool = true;
                                         });
                                     },10);
@@ -170,8 +195,7 @@
             },
             selectAlbumByName(callback){
                 let that = this;
-                console.log('开始检索');
-                console.log(that.albumName);
+                console.log('开始检索 '+that.albumName+' 相册');
                 if(that.photoReqInfo.hasNextPage){  //如果有下一页
                     var map = {};
                     //当前页号
@@ -195,7 +219,6 @@
                             console.log(data)
                             if(data.code == 1){
                                 console.log('检索成功');
-                                
                                 that.photoList = data.value.list;
                                 that.photoReqInfo.hasNextPage = data.value.hasNextPage; 
                                 that.photoReqInfo.pageSize = that.photoReqInfo.pageSize + 8;    //请求内容+8 
@@ -271,7 +294,23 @@
                         that.selectAlbumByName();
                     }
                 });
-            }
+            },
+            bindWindowResize(){         //绑定窗口变化事件，瀑布流重新排序
+                let that = this;
+                $(window).on('resize',window.debounce(function(ev){
+                    //如果window宽度没有改变，不进行排序
+                    if($(window).outerWidth() == that.windowWidth){
+                        return;
+                    }else{
+                        that.Cascade.resetCascade(0,function(){
+                            that.windowWidth = $(window).outerWidth();
+                            that.photoReqInfo.getPhotoListBool = true;
+                        });
+                    }
+                   
+                },1000));
+            },
+           
         },
         updated(){
             // this.arrangePhoto();
@@ -292,6 +331,7 @@
             this.selectAlbumByName();
             this.listenLeftWrapperTransitionEnd();
             this.bindScrollEvent();
+            this.bindWindowResize();
         }
     }
 </script>
