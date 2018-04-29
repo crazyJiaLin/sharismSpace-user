@@ -4,27 +4,38 @@
             <i class="fa fa-close"></i>
         </div>
         <div class="detail-info-wrapper">
-            <div class="detail-left-wrapper" 
-                v-loading="!showPhoto"  
-                element-loading-spinner="fa fa-spinner fa-pulse"
-                element-loading-background="rgba(0, 0, 0, 0)">
-                <div class="detail-img-wrapper">
-                    <img v-show="showPhoto" @load="imgLoaded" :src="photoDetailInfo.photoPath" :alt="photoDetailInfo.photoName"  class="detail-img animated fadeIn">
+            <div class="detail-left-wrapper">
+                <div class="show-photo-img-wrapper" 
+                    v-loading="!showPhoto"  
+                    element-loading-spinner="fa fa-spinner fa-pulse"
+                    element-loading-background="rgba(0, 0, 0, 0)">
+                    <div class="detail-img-wrapper">
+                        <img v-show="showPhoto" @load="imgLoaded" :src="photoDetailInfo.photoPath" :alt="photoDetailInfo.photoName"  class="detail-img animated fadeIn">
+                    </div>
                 </div>
                 <div @click.stop="prePhoto" class="change-photo-btn pre-photo-btn"><i class="fa fa-arrow-left"></i></div>
                 <div @click.stop="nextPhoto" class="change-photo-btn next-photo-btn"><i class="fa fa-arrow-right"></i></div>
             </div>
-            <div class="detail-right-wrapper">
+            
+            <div :class="showPhotoInfo ? 'detail-right-wrapper active' : 'detail-right-wrapper'">
+                <div @click.stop="showPhotoInfo = !showPhotoInfo" class="fold-photo-info-wrapper-btn">
+                    <i :class="showPhotoInfo ? 'fa fa-angle-double-right' : 'fa fa-angle-double-right fa-rotate-180'"></i>
+                </div>
                 <div class="show-photo-info-wrapper">
+                    <div class="photo-info-background">
+                        <img v-show="showPhoto" @load="imgLoaded" :src="photoDetailInfo.photoPath">
+                    </div>
                     <div class="edit-photo-info-btn">
                         <i @click.stop="showEdit($event)" class="fa fa-edit"></i>
                     </div>
-                    <el-form :model="photoDetailInfo" :rules="photoDetailInfoRules" ref="photoDetailInfo" label-width="100px" class="demo-ruleForm">
-                        <el-form-item label="相册名称" prop="photoName" label-width="80px">
-                            <el-input class="photo-name-input" :readonly="photoInfoReadOnly" v-model="photoDetailInfo.photoName" placeholder="请输入相册名称"></el-input>
+                    <el-form :model="photoDetailInfo" :rules="photoDetailInfoRules" ref="photoDetailInfo" label-width="100px" class="edit-photo-info-form">
+                        <el-form-item :label="!photoInfoReadOnly? '相片名称:' : ''" prop="photoName" :label-width="!photoInfoReadOnly? '90px' : '30px'">
+                            <div v-if="photoInfoReadOnly" class="show-photo-info-line photo-name" v-html="photoDetailInfo.photoName"></div>
+                            <el-input v-if="!photoInfoReadOnly" class="photo-name-input" :readonly="photoInfoReadOnly" v-model="photoDetailInfo.photoName" placeholder="请输入相片名称"></el-input>
                         </el-form-item>
-                        <el-form-item label="活动形式" prop="photoDescribe" label-width="80px">
-                            <el-input :readonly="photoInfoReadOnly" type="textarea" v-model="photoDetailInfo.photoDescribe" placeholder="请输入相册描述"></el-input>
+                        <el-form-item :label="!photoInfoReadOnly? '相片描述:' : ''" prop="photoDescribe" :label-width="!photoInfoReadOnly? '90px' : '30px'">
+                            <div v-if="photoInfoReadOnly" class="show-photo-info-line photo-desc" v-html="photoDetailInfo.photoDescribe"></div>
+                            <el-input v-if="!photoInfoReadOnly" :readonly="photoInfoReadOnly" type="textarea" v-model="photoDetailInfo.photoDescribe" placeholder="请输入相片描述"></el-input>
                         </el-form-item>
                         <div v-if="!photoInfoReadOnly" class="confirm-eidt-photo-info-wrapper animated fadeIn">
                             <el-button @click.stop="updatePhotoInfo" type="primary" plain>确认修改</el-button>
@@ -45,6 +56,7 @@
             return {
                 showPhoto : false,
                 photoInfoReadOnly : true,
+                showPhotoInfo : true,
                 selectPhotoInfo : {
                     pageNum : 1,
                     pageSize : 1,
@@ -57,7 +69,13 @@
                     photoPath : ''
                 },
                 photoDetailInfoRules:{  
-
+                    photoName: [
+                        { required: true, message:'照片名称不能为空', trigger: 'blur' },
+                        { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
+                    ],
+                    photoDescribe : [
+                        { max: 100, message: '不能超过100个字符', trigger: 'blur' }
+                    ]
                 }
             }
         },
@@ -193,7 +211,8 @@
                         message: '已取消修改'
                     });          
                 });
-            }
+            },
+           
         },
         mounted(){
             console.log(this.showPhotoDetailInfo);

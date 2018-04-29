@@ -81,7 +81,7 @@
                 <div @click="foldUserInfo" class="hide-user-info-btn"><i class="fa fa-angle-double-right"></i></div>
             </div>
             <div class="add-blog-btn-wrapper">
-                <el-button class="add-blog-btn" type="primary" round>  <a href="#/blog/add">发布博客</a> </el-button>
+                <el-button @click.stop="createNewBlog" class="add-blog-btn" type="primary" round>发布博客</el-button>
             </div>
             
         </div>
@@ -232,6 +232,7 @@
                     ev.preventDefault();
                     var queryId = $(this).parents('.blog-item').attr('id');
                     console.log(queryId);
+                    that.$emit('editBlog' , queryId);
                 });
                 //删除按钮绑定
                 $('.blog-list-wrapper .blog-list').on('click','.blog-item .delete-blog',function(ev){
@@ -253,6 +254,10 @@
                         });          
                     });
                 });
+            },
+            createNewBlog(){
+                this.$emit('editBlog' , '');   //向父组件传值，将博客id设置为空
+
             },
             deleteBlog(queryId){
                 let that = this;

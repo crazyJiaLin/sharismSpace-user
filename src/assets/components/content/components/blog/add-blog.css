@@ -22,7 +22,8 @@
 /* 发布博客选择表单 */
 .back-to-blog-list-wrapper{
     width: 100%;
-    height: 100px;
+    height: 80px;
+    margin-top: 50px;
     /* background: tomato; */
 }
 .back-to-blog-list-wrapper button.el-button{
@@ -48,7 +49,7 @@
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 1px 1px 20px 0 rgba(0, 0, 0, .3);
-    margin: 30px auto;
+    margin: 0 auto;
     line-height: 40px;
 }
 .select-add-option-wrapper .el-form-item{

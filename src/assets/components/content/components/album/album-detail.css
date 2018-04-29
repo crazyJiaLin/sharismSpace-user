@@ -137,6 +137,7 @@
     position: absolute;
     top: 20px;
     right: 20px;
+    z-index: 9;
 }
 .close-photo-detail-wrapper-btn i{
     font-size: 28px;
@@ -184,8 +185,31 @@
     right: 5px;
 }
 .detail-right-wrapper{
+    width: 0;
+    position: relative;
+    transition: width .5s ease;
+}
+.detail-right-wrapper.active{
     width: 500px;
-    /* background: springgreen; */
+}
+/* 折叠右侧信息栏按钮 */
+.fold-photo-info-wrapper-btn{   
+    width: 20px;
+    height: 30px;
+    border-radius: 50% 0 0 50%;
+    background: #fff;
+    opacity: .5;
+    line-height: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    position: absolute;
+    top: 100px;
+    left: -20px;
+    box-shadow: -5px 0px 20px 0 rgba(0, 0, 0, .3);
+    transition: all .5s ease;
+}
+.fold-photo-info-wrapper-btn:hover{
+    opacity: 1;
 }
 
 .detail-img-wrapper{
@@ -211,11 +235,61 @@
     width: 450px;
     height: auto;
     /* height: 300px; */
-    background: #fff;
+    background: rgba(255, 255, 255, .2);
+    box-shadow: 2px 2px 20px 0 rgba(0, 0, 0, .2);
     margin: 80px 0 0;
     border-radius: 10px;
     padding: 20px 30px 20px 0;
-    transition: all 1s ease;
+    position: relative;
+}
+
+
+.photo-info-background{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .5);
+}
+.photo-info-background img{
+    width: 100%;
+    height: auto;
+    -webkit-filter: blur(15px);
+    -moz-filter: blur(15px);
+    -ms-filter: blur(15px);
+    -o-filter: blur(15px);
+    filter: blur(15px);
+}
+/* 普通显示相片信息 */
+.show-photo-info-line{  
+    width: 100%;
+    margin-top: 8px;
+    line-height: 25px;
+    height: auto;
+    text-align: center;
+    color: #000;
+}
+.edit-photo-info-form .el-form-item__label{
+    color: #000;
+    font-size: 15px;
+    font-weight: bold;
+}
+/* 点击编辑按钮显示input */
+.edit-photo-info-form .el-input__inner{
+    background: rgba(0, 0, 0, .4);
+    color: #fff;
+}
+.edit-photo-info-form .el-textarea__inner{
+    background: rgba(0, 0, 0, .4);
+    color: #fff;
 }
 .edit-photo-info-btn{
     width: 100%;

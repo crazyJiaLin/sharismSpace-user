@@ -103,6 +103,9 @@
 
 <script>
     export default{
+        props : {
+            editId : String
+        },
         data(){
             return {
                 classifyList: [],
@@ -534,7 +537,7 @@
                         // console.log(data)
                         if(data.code == 1){
                             that.draftBlogList = data.value.list;
-                            console.log(that.draftBlogList);
+                            // console.log(that.draftBlogList);
                         }else{
                             that.$message.error(data.message);  
                         }
@@ -544,13 +547,60 @@
                         that.$message.error("服务器开小差了~稍后重试 ^8^");  
                     }  
                 });
+            },
+            selectBlogById(){
+                let that = this;
+                
+                if(!that.submitBlogForm.blogId){
+                    return that.$message.error('获取博客信息失败');
+                }
+                var formData=new FormData();
+                formData.append("blogId",that.submitBlogForm.blogId);
+                $.ajax({
+                    type: "post",  
+                    url: window.blogReqUrl + "/blog/selectBlogById",
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    data : formData,
+                    success:function(data){	
+                        console.log(data)
+                        if(data.code == 1){
+                            that.submitBlogForm.blogId = data.value.id;
+                            that.submitBlogForm.draft = data.value.draft;
+                            that.submitBlogForm.blogTitle = data.value.blogTitle;
+                            that.submitBlogForm.titleIcon = data.value.titleIcon;
+                            that.submitBlogForm.baseBlog = data.value.baseBlog;
+                            that.submitBlogForm.blog = data.value.blog;
+                            that.submitBlogForm.classify = data.value.classify;
+                            that.submitBlogForm.blogType = data.value.blogType;
+                            that.submitBlogForm.public = data.value.privacySet==1 ? true : false;
+                            that.submitBlogForm.reward = data.value.reward==1 ? true : false;
+                            //将博客文本添加到富文本中
+                            that.editor.ready(function() {
+                                that.editor.setContent(that.submitBlogForm.blog);
+                            });
+                        }else{
+                            that.$message.error(data.message);  
+                        }
+                    }, 				 
+                    error:function(){  
+                        that.$message.error("服务器开小差了~稍后重试 ^8^");  
+                    }  
+                });
             }
         },
         mounted(){
+            console.log('打开add，收到参数'+ this.editId);
+           
             let that = this;
-            this.editor = UE.getEditor('editor');   //实例化富文本
-            this.getDraftBlog();
-            this.editor.addListener("contentChange",function(){ //监听富文本内容变化，将保存到草稿按钮加上小圆点
+            that.submitBlogForm.blogId = that.editId;   //接受父组件传来的博客id，并赋值给博客
+            if(that.submitBlogForm.blogId){     //如果博客id不为空，说明是编辑原文章，按照id查询博客
+                that.selectBlogById();
+            }
+            that.editor = UE.getEditor('editor');   //实例化富文本
+            that.getDraftBlog();
+            that.editor.addListener("contentChange",function(){ //监听富文本内容变化，将保存到草稿按钮加上小圆点
                 that.submitBlogForm.blog = that.editor.getContent();
             });
         },

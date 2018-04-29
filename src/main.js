@@ -55,7 +55,10 @@ import Website from './assets/components/content/components/website/website.vue'
 
 //自定义过滤器，取得字符串前10位
 Vue.filter('filterPhotoName', function(value) {
-  value = value.toString().slice(0,value.lastIndexOf('.'));
+  // console.log(value.lastIndexOf('.'));
+  if(value.lastIndexOf('.') >= 0){
+    value = value.toString().slice(0,value.lastIndexOf('.'));
+  }
   if(value.length > 10){
     // console.log('字符串大于十个过滤'+value);
     return value.substring(0,10) + '...';

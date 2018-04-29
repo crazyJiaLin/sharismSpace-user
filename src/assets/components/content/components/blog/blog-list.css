@@ -130,7 +130,7 @@
     height: auto;
     line-height: 30px;
     text-decoration: none;
-    color: #555;
+    color: #888;
 }
 .blog-list .blog-item .blog-title{
     line-height: 30px;
@@ -145,6 +145,7 @@
     margin-top: 20px;
     text-indent: 2em;
     font-size: 1em;
+    color: #555;
 }
 .blog-list .blog-item .blog-info-wrapper{
     width: 100%;
