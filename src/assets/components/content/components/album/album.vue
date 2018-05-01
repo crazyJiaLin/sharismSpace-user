@@ -1,5 +1,5 @@
 <template>
-        <div class="sec-router-wrapper">
+    <div class="sec-router-wrapper">
         <div class="second-chilren-router-wrapper">
             <div class="second-chilren-router-left-wrapper">
                 <div class="blog-list-wrapper album-list-wrapper">

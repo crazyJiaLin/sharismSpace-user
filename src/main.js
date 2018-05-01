@@ -43,13 +43,15 @@ import './assets/Ueditor/ueditor.parse.min.js'
 Vue.use(ElementUI);
 Vue.use(VueRouter);
 
-
+// 博客系统
 import Blog from './assets/components/content/components/blog/blog.vue'
 import BlogList from './assets/components/content/components/blog/components/blog-list.vue'
 import AddBlog from './assets/components/content/components/blog/components/add-blog.vue'
+// 相册系统
 import Album from './assets/components/content/components/album/album.vue'
 import AlbumList from './assets/components/content/components/album/album-list.vue'
 import AlbumDetail from './assets/components/content/components/album/album-detail.vue'
+// 文件系统
 import File from './assets/components/content/components/file/file.vue'
 import Website from './assets/components/content/components/website/website.vue'
 

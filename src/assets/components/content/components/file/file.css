@@ -1,0 +1,68 @@
+
+.show-file-capacity{
+    line-height: 30px;
+   
+}
+.show-capacity-info{
+    text-align: left;
+    margin: 10px 0;
+    height: 30px;
+    overflow: hidden;
+}
+.show-capacity-info span{
+    margin: 0 20px;
+    font-size: 18px;
+}
+.extend-capacity-btn{
+    height: 100%;
+    line-height: 30px;
+    float: right;
+    font-weight: bold;
+    padding: 0;
+    /* font-size: 16px; */
+}
+
+/* 左侧 */
+
+.change-view-btn{
+    float: right;
+    margin-right: 20px;
+    font-size: 22px;
+    height: 100%;
+    line-height: 40px;
+    /* background: tomato; */
+}
+.change-view-btn i{
+    cursor: pointer;
+}
+.change-view-btn i:hover{
+    color: #409EFF;
+}
+
+.file-operate-btns-wrapper{
+    box-sizing: border-box;
+    width: 100%;
+    height: 42px;
+    line-height: 40px;
+    /* background: tomato; */
+    text-align: left;
+    padding: 0 20px;
+}
+.file-operate-btns-wrapper button i{
+    margin-right: 5px;
+}
+.file-operate-btns{
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center;
+    float: right;
+    height: 42px;
+    /* background: yellow; */
+}
+.file-list-wrapper{
+    height: 500px;
+    /* background: tomato; */
+    margin-top: 10px;
+    text-align: left;
+}
