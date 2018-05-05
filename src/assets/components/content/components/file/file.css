@@ -23,7 +23,13 @@
 }
 
 /* 左侧 */
-
+/* 面包屑 */
+.file-breadcrumb-wrapper .el-breadcrumb__item .el-breadcrumb__inner span{
+    font-weight: 700;
+}
+.file-breadcrumb-wrapper .el-breadcrumb__item:last-child .el-breadcrumb__inner span{
+    font-weight: 400;
+}
 .change-view-btn{
     float: right;
     margin-right: 20px;
@@ -61,8 +67,51 @@
     /* background: yellow; */
 }
 .file-list-wrapper{
-    height: 500px;
+    /* height: 500px; */
     /* background: tomato; */
     margin-top: 10px;
     text-align: left;
 }
+.selection-cjl{
+    border-bottom: none;
+}
+.file-list-wrapper .el-table__header-wrapper {
+    border-bottom: 1px solid #ccc;
+}
+.file-list-wrapper .el-table__header-wrapper th{
+    border-bottom: 0;
+  
+}
+.file-list-wrapper .el-table__header-wrapper th .cell{
+    font-weight: bold;
+}
+.file-list-wrapper  .el-table__body-wrapper td{
+    border-bottom: none;
+}
+.file-list-wrapper  .el-table::before{
+    height: 0;
+}
+/* 文件类型雪碧图 */
+.file-list-wrapper .fa{
+    color: #000;
+    font-size: 1.1em;
+}
+.file-list-wrapper .fa.fa-folder{
+    color: rgb(255, 214, 85);
+    font-size: 1.4em;
+}
+.file-list-wrapper .cell span{
+    margin-left: 5px;
+}
+.file-list-wrapper .cell span.is-folder{
+    cursor: pointer;
+}
+.file-list-wrapper .cell span.is-folder:hover{
+    color: #409EFF;
+}
+/* .file-table-type-icon{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: tomato;
+} */

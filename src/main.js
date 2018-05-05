@@ -8,7 +8,8 @@ import App from './App.vue'
 window.blogReqUrl = 'http://www.sharismspace.com/blog_server-0.0.1-SNAPSHOT';   //博客系统服务器地址
 window.userReqUrl = 'http://www.sharismspace.com/user_server-0.0.1-SNAPSHOT';   //用户系统服务器地址
 window.albumReqUrl = 'http://www.sharismspace.com/album_server-0.0.1-SNAPSHOT';  //相册系统服务器地址
-window.fileReqUrl = 'http://www.sharismspace.com/file_server-0.0.1-SNAPSHOT';   //文件系统服务器地址
+window.fileReqUrl = 'http://www.sharismspace.com/file_server-0.0.1-SNAPSHOT';   //文件上传系统服务器地址
+window.resourceReqUrl = 'http://www.sharismspace.com/resource_server-0.0.1-SNAPSHOT' ;  //文件管理系统服务器地址
 
 window.debounce = function(action,idle){      //节流函数,挂在到window对象上
   var last
@@ -74,7 +75,60 @@ Vue.filter('filterTime', function(value) {
     return value.substring(0,10);
   }
   return value;
-})
+});
+Vue.filter('fileSizeFilter', function(value) {
+  value = parseFloat(value);
+  // console.log(value);
+  if(value<0){
+    return '-';
+  }else if(value>=0 && value <1024){
+    return value.toFixed(2) + 'KB';
+  }else if(value>=1024 && value <1048576){
+    return (value/1024).toFixed(2) + 'MB';
+  }else if(value>=1048576){
+    return (value/1048576).toFixed(2) + 'GB';
+  }
+});
+
+// 文件类型过滤器，传入文件名，返回图标class
+Vue.filter('fileTypeFilter', function(value) {
+  value = JSON.parse(value); 
+  // console.log(value);
+  if(value.isFolder == 1){
+    return 'fa fa-folder';  //文件夹类型
+  }
+
+  if(value.type.lastIndexOf('.') >= 0){  //说明有后缀，不是文件夹
+    var suffix = value.type.toString().slice(value.type.lastIndexOf('.'));
+    // console.log(suffix);
+    if(suffix == '.txt'){   //文本类型
+      return 'fa fa-file-text-o';
+    }else  if(/\.(js|html|css)/i.test(suffix)){  //代码类型
+      return 'fa fa-file-code-o';
+    }else  if(/\.(jpg|jpeg|png|svg|gif|bmp)/i.test(suffix)){  //图片类型
+      return 'fa fa-file-image-o';
+    }else  if(/\.(mp3|wma|wav|mod|ra|cd|md|asf)/i.test(suffix)){  //声音类型
+      return 'fa fa-file-sound-o';
+    }else  if(/\.(mp4|avi|mov|mpeg|mpg|qt|ram|viv)/i.test(suffix)){  //视频类型
+      return 'fa fa-file-video-o';
+    }else  if(/\.(zip|rar|tar|gzip|cab|uue|arj|iso)/i.test(suffix)){  //压缩类型
+      return 'fa fa-file-zip-o';
+    }else  if(/\.(pdf)/i.test(suffix)){  //word
+      return 'fa fa-file-pdf-o';
+    }else  if(/\.(doc|docx)/i.test(suffix)){  //pdf
+      return 'fa fa-file-word-o';
+    }else  if(/\.(xls|xlsx)/i.test(suffix)){  //excel
+      return 'fa fa-file-excel-o';
+    }else  if(/\.(ppt|pptx)/i.test(suffix)){  //ppt
+      return 'fa fa-file-powerpoint-o';
+    }else{  //其他文件类型
+      return 'fa fa-file-o';
+    }
+  }else{  //其他文件类型
+    return 'fa fa-file-o';
+  }
+  
+});
 
 
 const router = new VueRouter({
@@ -111,6 +165,10 @@ new Vue({
       if(to.path == '/album'){
         window.location.hash = '/album/list';
       }
+      // if(to.path == '/file'){
+      //   console.log('file');
+      //   window.location.hash = '/file/all';
+      // }
       // if()
     }
 	},

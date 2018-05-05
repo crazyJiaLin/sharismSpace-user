@@ -140,7 +140,7 @@
 
             },
             uploadEnd(uploadImgList){   //父组件接到了子组件传递的内容,开始给相册添加照片
-                console.log(uploadImgList);
+                console.log(uploadImgList); 
                 let that = this;    
                 that.uploadImgLoading = true;   //打开loading
                 let count = 0;  // 开始计数，当count达到数组长度时，说明全部上传完成，关闭loading   
@@ -205,7 +205,7 @@
                     //相册名称
                     map['albumName']= that.albumName;
                     //查询已经删除的照片（回收站）时  del=1， 不加默认都查询
-		            map['del']=0;
+		            map['isDel']=0;
                     var formData=new FormData();
                     formData.append("photoPageList",JSON.stringify(map));
                     $.ajax({

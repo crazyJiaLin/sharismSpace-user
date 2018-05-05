@@ -140,7 +140,7 @@
                 //相册名称
                 map['albumName']= that.showPhotoDetailInfo.albumName;
                 //查询存在的相册列表，如果查询回收站里的列表 isDel=1 
-                map['isDel']= 0;	
+                map['isDel']= 0;	 
                 //列排序  按照时间降序 DESC  升序 ASC  不加默认按时间降序
                 map['arrange']= "DESC";
                 var formData=new FormData();
