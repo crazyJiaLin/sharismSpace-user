@@ -89,7 +89,7 @@
                 <el-form-item label="上传封皮" :label-width="formLabelWidth">
                     <el-col class="select-album-btn-wapper" :span="12">
                         <el-button @click="clickToSelectAlbumIcon($event)">选择封皮</el-button>
-                        <input v-show="false" class="album-icon-file-input" type="file" @change="selectAlbumIcon($event,'new')"/>
+                        <input accept="image/*" v-show="false" class="album-icon-file-input" type="file" @change="selectAlbumIcon($event,'new')"/>
                         <!-- <input @change="selectAlbumIcon($event)" class="album-icon-file-input" type="file" ></input> -->
                     </el-col> 
                     <el-col :span="12" >

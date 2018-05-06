@@ -243,8 +243,10 @@
 
                     /* 检查文件格式 */
                     if (!file.ext || acceptExtensions.indexOf(file.ext.toLowerCase()) == -1) {
-                        showError('not_allow_type');
-                        uploader.removeFile(file);
+                        // console.log(file.ext);   //文件后缀
+                        // 取消文件格式过滤
+                        // showError('not_allow_type'); 
+                        // uploader.removeFile(file);
                     }
                 }
 
@@ -554,9 +556,12 @@
             for (i = 0; i < this.fileList.length; i++) {
                 data = this.fileList[i];
                 link = data.url;
+                // console.log(data);  //服务器返回的数据
                 list.push({
                     title: data.original || link.substr(link.lastIndexOf('/') + 1),
-                    url: prefix + link
+                    url: prefix + link,
+                    size : data.size,
+                    fileType : data.fileType
                 });
             }
             return list;

@@ -5,11 +5,11 @@ import './assets/js/jquery-3.3.1.js'
 import App from './App.vue'
 
 // 全局地址请求
-window.blogReqUrl = 'http://www.sharismspace.com/blog_server-0.0.1-SNAPSHOT';   //博客系统服务器地址
-window.userReqUrl = 'http://www.sharismspace.com/user_server-0.0.1-SNAPSHOT';   //用户系统服务器地址
-window.albumReqUrl = 'http://www.sharismspace.com/album_server-0.0.1-SNAPSHOT';  //相册系统服务器地址
-window.fileReqUrl = 'http://www.sharismspace.com/file_server-0.0.1-SNAPSHOT';   //文件上传系统服务器地址
-window.resourceReqUrl = 'http://www.sharismspace.com/resource_server-0.0.1-SNAPSHOT' ;  //文件管理系统服务器地址
+window.blogReqUrl = 'https://www.sharismspace.com/blog_server-0.0.1-SNAPSHOT';   //博客系统服务器地址
+window.userReqUrl = 'https://www.sharismspace.com/user_server-0.0.1-SNAPSHOT';   //用户系统服务器地址
+window.albumReqUrl = 'https://www.sharismspace.com/album_server-0.0.1-SNAPSHOT';  //相册系统服务器地址
+window.fileReqUrl = 'https://www.sharismspace.com/file_server-0.0.1-SNAPSHOT';   //文件上传系统服务器地址
+window.resourceReqUrl = 'https://www.sharismspace.com/resource_server-0.0.1-SNAPSHOT' ;  //文件管理系统服务器地址
 
 window.debounce = function(action,idle){      //节流函数,挂在到window对象上
   var last
@@ -98,8 +98,8 @@ Vue.filter('fileTypeFilter', function(value) {
     return 'fa fa-folder';  //文件夹类型
   }
 
-  if(value.type.lastIndexOf('.') >= 0){  //说明有后缀，不是文件夹
-    var suffix = value.type.toString().slice(value.type.lastIndexOf('.'));
+  if(value.name.lastIndexOf('.') >= 0){  //说明有后缀，不是文件夹
+    var suffix = value.name.toString().slice(value.name.lastIndexOf('.'));
     // console.log(suffix);
     if(suffix == '.txt'){   //文本类型
       return 'fa fa-file-text-o';

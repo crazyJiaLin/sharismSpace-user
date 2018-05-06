@@ -24795,7 +24795,6 @@ UE.plugin.register('insertfile', function (){
             'insertfile': {
                 execCommand: function (command, filelist){
                     filelist = utils.isArray(filelist) ? filelist : [filelist];
-
                     var i, item, icon, title,
                         html = '',
                         URL = me.getOpt('UEDITOR_HOME_URL'),
@@ -24810,6 +24809,7 @@ UE.plugin.register('insertfile', function (){
                             '</p>';
                     }
                     me.execCommand('insertHtml', html);
+                    me.fireEvent('afterUpfile', filelist);
                 }
             }
         }
