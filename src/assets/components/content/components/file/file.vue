@@ -22,9 +22,7 @@
                             <transition name="el-fade-in">
                                 <el-button-group v-show="showBatchBtns" class="file-operate-btns">
                                     <el-button size="medium" plain icon="fa fa-share-alt fa-lg fa-lg">分享</el-button>
-                                    <!-- <el-button size="medium" plain icon="fa fa-cloud-download fa-lg">下载</el-button>
-                                    <el-button size="medium" plain >重命名</el-button> -->
-                                    <el-button size="medium" plain icon="fa fa-arrows fa-lg">移动到</el-button>
+                                    <el-button @click.stop="moveResource" size="medium" plain icon="fa fa-arrows fa-lg">移动到</el-button>
                                     <el-button @click.stop="deleteResource" size="medium" plain icon="fa fa-trash fa-lg">删除</el-button>
                                 </el-button-group>
                             </transition>
@@ -52,7 +50,12 @@
                                                 </div>
                                                 <el-dropdown-menu slot="dropdown">
                                                     <el-dropdown-item command="rename" :id="scope.row.id" :file-name="scope.row.fileName">重命名</el-dropdown-item>
-                                                    <el-dropdown-item command="download" :id="scope.row.id" :file-type="scope.row.fileType">下载</el-dropdown-item>
+                                                    <el-dropdown-item v-if="scope.row.folder == 1 ? false : true"  
+                                                        command="download" 
+                                                        :id="scope.row.id" :file-path="scope.row.filePath" 
+                                                        :file-name="scope.row.fileName">
+                                                        下载
+                                                    </el-dropdown-item>
                                                 </el-dropdown-menu>
                                             </el-dropdown>
                                           
@@ -114,12 +117,17 @@
                 </div>                
             </div>
         </div>
+        <moveResource v-if="showMoveResource" :ids="moveIds" class="animated fadeIn" @closeMoveResource="closeMoveResource($event)"></moveResource>
     </div>
 </template>
 
 <script>
     import './file.css'
+    import moveResource from './move-resource.vue'
     export default{
+        components : {
+            moveResource
+        },
         computed : {
             userSexIcon(){  //计算属性，将性别数据变为图标
                return this.fileUserInfo.userSex == '女' ? '<i class="fa fa-venus"></i>' : '<i class="fa fa-mars"></i>';
@@ -129,8 +137,9 @@
             return {
                 uploadEditor : null,    //UE上传附件
                 showBatchBtns : false,  //显示批量操作按钮
-               
+                showMoveResource : false,   //显示移动资源组件
                 fileList: [],
+                moveIds : [],       //需要移动文件或者文件的id数组
                 breadcrumbList : [
                     // {path:{},breadcrumb:'相册管理'},
                     {id:'root',breadcrumb:'全部文件'}
@@ -154,7 +163,7 @@
                     fileListLoading : true,  //是否加入表格loading
                     isRemindNoMoreImg : false,  //还没有提示没有更多文件
                     pageNum : 1,
-                    pageSize : 10,
+                    pageSize : 15,
                     parentId : 'root',    //父级文件夹的id
                 },
                 insertResourceInfo : {   //创建资源的请求信息
@@ -168,6 +177,14 @@
             }
         },
         methods : {
+            closeMoveResource(msg){    //关闭移动资源组件
+                console.log(msg);
+                this.showMoveResource = false;
+                if(msg == 'success'){
+                    this.fileListReqInfo.fileListLoading = true;
+                    this.getFileList();
+                }
+            },
             operateFile(command,$event){  //单个文件操作
                 console.log(command);
                 let queryId = $($event.$el).attr('id');
@@ -175,15 +192,16 @@
                     let fileName = $($event.$el).attr('file-name');
                     this.renameFile(queryId,fileName);
                 }else if(command == 'download'){
-                    let fileType = JSON.parse($($event.$el).attr('file-type'));
-                    this.downloadFile(queryId,fileType);
+                    let filePath = $($event.$el).attr('file-path')
+                    let fileName = $($event.$el).attr('file-name')
+                    this.downloadFile(queryId,filePath,fileName);
                 }
             },
             renameFile(queryId,fileName){   //重命名文件
                 let that = this;
                 console.log(queryId);
                 console.log(fileName);
-                this.$prompt('请输入邮箱', '提示', {
+                this.$prompt('请输入文件夹名称', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     inputValue : fileName,
@@ -232,16 +250,15 @@
                     });
                 }).catch(() => {});
             },
-            downloadFile(queryId,fileType){   //下载文件
+            downloadFile(queryId,filePath,fileName){   //下载文件
                 console.log(queryId);
-                console.log(fileType);
-                if(fileType.isFolder == 1){ //说明是文件夹
-                    return this.$message({
-                        type : 'warning',
-                        message : '本功能还没有开放，程序员正在努力中。。。'
-                    });
+                console.log(filePath);
+                console.log(fileName);
+                if(!filePath){
+                    return this.$message.error('文件获取失败');
                 }
-
+                var url = filePath + '?filename=' + fileName;
+	            window.open(url);
             },
             createNewFolder(){          //创建文件夹
                 let that = this;
@@ -335,7 +352,7 @@
                 console.log(queryId,index);
                 this.fileListReqInfo.parentId = queryId;    //重新设置页面所在文件夹id
                 this.fileListReqInfo.fileListLoading = true;    //打开loading
-                this.fileListReqInfo.pageSize = 10; //重新设置请求数量为10
+                this.fileListReqInfo.pageSize = 15; //重新设置请求数量为10
                 this.getFileList();
             },
             selectFileListById(queryId,folder,fileName){    //点击文件或者文件列表，进行查询
@@ -393,14 +410,29 @@
                     }  
                 });	
             },
-            handleSelectionChange(val) {
+            handleSelectionChange(val) {    //选中列表的复选框
                 this.manageDataList = val;
-                console.log(val);
+                // console.log(val);
                 if(this.manageDataList.length >0){
                     this.showBatchBtns = true;
                 }else{
                     this.showBatchBtns = false;
                 }
+            },
+            moveResource(){     //移动资源
+                let that = this;
+                if(that.manageDataList.length <=0){
+                    return that.$message({
+                        type : 'warning',
+                        message : '请选择文件'
+                    });
+                }
+                that.moveIds = [];  //首先需要清空操作id数组，然后开始添加
+                console.log(that.manageDataList);
+                for(let i=0; i<that.manageDataList.length;i++){
+                    that.moveIds.push(that.manageDataList[i].id);
+                }
+                that.showMoveResource = true;
             },
             deleteResource(){   //删除资源
                 let that = this;
