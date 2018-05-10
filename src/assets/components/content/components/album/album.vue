@@ -1,17 +1,19 @@
 <template>
-        <div class="sec-router-wrapper">
+    <div class="sec-router-wrapper">
         <div class="second-chilren-router-wrapper">
             <div class="second-chilren-router-left-wrapper">
                 <div class="blog-list-wrapper album-list-wrapper">
                     <div class="album-breadcrumb-wrapper">
                         <el-breadcrumb separator="/" separator-class="el-icon-arrow-right">
-                            <el-breadcrumb-item :to="{ path: '/album' }">相册管理</el-breadcrumb-item>
-                            <el-breadcrumb-item>相册列表</el-breadcrumb-item>
+                            <el-breadcrumb-item v-for="(item,key) in breadcrumbList" :to="item.path">{{item.breadcrumb}}</el-breadcrumb-item>
                         </el-breadcrumb>
+                        <!-- <div class="sort-photo-wrapper">
+                            sort-photo
+                        </div> -->
                     </div>
                     <div class="album-second-router-wrapper">
                         <transition name="album-children-router-view" class="animated">
-                            <router-view></router-view>
+                            <router-view ></router-view>
                         </transition>
                     </div>
                 </div>
@@ -72,7 +74,9 @@
     export default{
         watch : {
             $route(to,from){
+                console.log('路由改变了');
                 console.log(to);
+              this.setBreadByParams(to.path);
             }
         },
         computed : {
@@ -82,6 +86,10 @@
         },
         data(){
             return {
+                breadcrumbList : [
+                    // {path:{},breadcrumb:'相册管理'},
+                    {path:{path:'/album/list'},breadcrumb:'相册列表'}
+                ],
                 blogUserInfo : {
                     userNickname : 'crazyjialin',
                     iconPath: 'http://photocdn.sohu.com/20110518/Img307890814.jpg',
@@ -98,6 +106,24 @@
             }
         },
         methods : {
+            setBreadByUrl(){
+                // console.log(window.location.hash);
+                this.setBreadByParams(window.location.hash);
+            },
+            setBreadByParams(to){
+                if(to.indexOf('/album/detail/') != -1){ //说明进入相片详情组件
+                    let arr =  to.split('/')
+                    let albumName = decodeURIComponent(arr[arr.length-1]);
+                    console.log(albumName);
+                    let breadObj = {path:{},breadcrumb:albumName};
+                    this.breadcrumbList.push(breadObj);
+               }else if(to.indexOf('/album/list') != -1){
+                   this.breadcrumbList=[
+                    // {path:{},breadcrumb:'相册管理'},
+                    {path:{path:'/album/list'},breadcrumb:'相册列表'}
+                ];
+               }
+            },
             foldUserInfo(){     //折叠用户信息
                 if($('.second-chilren-router-wrapper').hasClass('close-user')){
                     $('.second-chilren-router-wrapper').removeClass('close-user');
@@ -107,6 +133,9 @@
                     $('.hide-user-info-btn i').addClass('fa-rotate-180');
                 }
             },
+        },
+        mounted(){
+            this.setBreadByUrl();       //加载到相册列表是，通过哈希值获取设置面包屑
         }
     }
 </script>

@@ -13,14 +13,18 @@
     width: 100%;
     line-height: 30px;
     padding-left: 30px;
-    /* background: yellow; */
 }
 .album-breadcrumb-wrapper > .el-breadcrumb{
+    float: left;
+    /* background: tomato; */
     height: 100%;
     line-height: 40px;
     font-size: 1em;
     font-family: "微软雅黑"
 }
+
+/* 相册分类，请见album-detail.css */
+
 .album-second-router-wrapper{
     box-sizing: border-box;
     width: 100%;
@@ -310,6 +314,14 @@
     text-align: left;
 }
 
+/* 上传封皮 */
+.select-album-btn-wapper{
+    text-align: center;
+}
+.album-icon-file-input{
+    width: 100%;
+    line-height: 30px;
+}
 .preview-album-icon-wrapper{
     display: flex;
     display: -webkit-flex;

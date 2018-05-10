@@ -4,7 +4,7 @@
 		fileInput : null,             // 选择文件按钮dom对象
 		uploadInput : null,           // 上传文件按钮dom对象
 		dragDrop: null,				  //拖拽敏感区域
-		url : "http://118.25.46.139:8080/file_server-0.0.1-SNAPSHOT/file/ueditorImage",  					  // 上传action路径
+		url :  window.fileReqUrl + "/file/ueditorImage",  					  // 上传action路径
 		uploadFile : [],  			  // 需要上传的文件数组
 		lastUploadFile : [],          // 上一次选择的文件数组，方便继续上传使用
 		perUploadFile : [],           // 存放永久的文件数组，方便删除使用
@@ -31,6 +31,9 @@
 		onComplete : function(responseInfo){         // 提供给外部获取全部文件上传完成，供外部实现完成效果
 			
 		},
+		onEnd : function(msg){
+			console.log('self '+msg);
+		},	//点击结束上传的回调函数，这里不执行，在下一个执行
 		
 		/* 内部实现功能方法 */
 		// 获得选中的文件
@@ -98,8 +101,8 @@
 			
 			// 执行选择回调
 			this.onSelect(selectFile, this.uploadFile);
-			console.info("继续选择");
-			console.info(this.uploadFile);
+			// console.info("继续选择");
+			// console.info(this.uploadFile);
 			return this;
 		},
 		// 处理需要删除的文件  isCb代表是否回调onDelete方法  
@@ -110,7 +113,7 @@
 			var tmpFile = [];  // 用来替换的文件数组
 			// 合并下上传的文件
 			var delFile = this.perUploadFile[delFileIndex];
-			console.info(delFile);
+			// console.info(delFile);
 			// 目前是遍历所有的文件，对比每个文件  删除
 			$.each(this.uploadFile, function(k, v){
 				if(delFile != v){
@@ -126,8 +129,8 @@
 				self.onDelete(delFile, this.uploadFile);
 			}
 			
-			console.info("还剩这些文件没有上传:");
-			console.info(this.uploadFile);
+			// console.info("还剩这些文件没有上传:");
+			// console.info(this.uploadFile);
 			return true;
 		},
 		// 上传多个文件
@@ -224,7 +227,7 @@
 					height           : "400px",  					// 宽度
 					itemWidth        : "140px",                     // 文件项的宽度
 					itemHeight       : "120px",                     // 文件项的高度
-					url              : "http://118.25.46.139:8080/file_server-0.0.1-SNAPSHOT/file/ueditorImage",  	// 上传文件的路径
+					url              : window.fileReqUrl + "/file/ueditorImage",  	// 上传文件的路径
 					multiple         : true,  						// 是否可以多个文件上传
 					dragDrop         : true,  						// 是否可以拖动上传文件
 					del              : true,  						// 是否可以删除文件
@@ -235,6 +238,9 @@
 					onSuccess		 : function(file){},            // 文件上传成功的回调方法
 					onFailure		 : function(file){},            // 文件上传失败的回调方法
 					onComplete		 : function(responseInfo){},    // 上传完成的回调方法
+					//cjl修改组价内部，加入新的参数
+					onEnd			 : function(msg){},				//点击结束上传按钮的事件
+					onAlert 		 : function(msg){},				//回调给组件的alert事件
 			};
 			
 			para = $.extend(defaults,options);
@@ -263,7 +269,7 @@
 	            	html += '				<div class="convent_choice">';
 	            	html += '					<div class="andArea">';
 	            	html += '						<div class="filePicker">点击选择文件</div>';
-	            	html += '						<input id="fileImage" type="file" size="30" name="fileselect[]" '+multiple+'>';
+	            	html += '						<input id="fileImage" type="file" accept="image/*" size="30" name="fileselect[]" '+multiple+'>';
 	            	html += '					</div>';
 	            	html += '				</div>';
 					html += '				<span id="fileDragArea" class="upload_drag_area">或者将文件拖到此处</span>';
@@ -271,7 +277,7 @@
 		            html += '			<div class="status_bar">';
 		            html += '				<div id="status_info" class="info">选中0张文件，共0B。</div>';
 		            html += '				<div class="btns">';
-		            html += '					<div class="webuploader_pick">继续选择</div>';
+		            html += '					<div class="webuploader_pick">插入到相册</div>';
 		            html += '					<div class="upload_btn">开始上传</div>';
 		            html += '				</div>';
 		            html += '			</div>';
@@ -293,8 +299,8 @@
 		            html += '			<div class="status_bar">';
 		            html += '				<div id="status_info" class="info">选中0张文件，共0B。</div>';
 		            html += '				<div class="btns">';
-		            html += '					<input id="fileImage" type="file" size="30" name="fileselect[]" '+multiple+'>';
-		            html += '					<div class="webuploader_pick">选择文件</div>';
+		            html += '					<input id="fileImage" type="file" accept="image/*" size="30" name="fileselect[]" '+multiple+'>';
+		            html += '					<div class="webuploader_pick">插入到相册</div>';
 		            html += '					<div class="upload_btn">开始上传</div>';
 		            html += '				</div>';
 		            html += '			</div>';
@@ -355,7 +361,7 @@
 				var arrFiles = [];  // 替换的文件数组
 				for (var i = 0, file; file = files[i]; i++) {
 					if (file.size >= 51200000) {
-						alert('您这个"'+ file.name +'"文件大小过大');	
+						para.onAlert('您这个"'+ file.name +'"文件大小过大');	
 					} else {
 						// 在这里需要判断当前所有文件中
 						arrFiles.push(file);	
@@ -524,8 +530,7 @@
 						$("#uploadList_" + file.index).fadeOut();
 						// 重新设置统计栏信息
 						self.funSetStatusInfo(files);
-						console.info("剩下的文件");
-						console.info(files);
+						para.onDelete(file,files);
 					},
 					onProgress: function(file, loaded, total) {
 						var eleProgress = $("#uploadProgress_" + file.index), percent = (loaded / total * 100).toFixed(2) + '%';
@@ -554,7 +559,9 @@
 						//$("#uploadImage_" + file.index).css("opacity", 0.2);
 					},
 					onComplete: function(response){
-						console.info(response);
+						console.log('组件内部调用complete函数');
+						para.onComplete(response);
+						// console.info(response);
 					},
 					onDragOver: function() {
 						$(this).addClass("upload_drag_hover");
@@ -578,14 +585,21 @@
 				// 如果快捷添加文件按钮存在
 				if($(".filePicker").length > 0){
 					// 绑定选择事件
-					$(".filePicker").bind("click", function(e){
+					$(".filePicker").bind("click", function(e){	//点击选择文件按钮
 		            	$("#fileImage").click();
 		            });
 				}
 	            
-				// 绑定继续添加点击事件
-				$(".webuploader_pick").bind("click", function(e){
-	            	$("#fileImage").click();
+				// 点击结束上传按钮
+				$(".webuploader_pick").bind("click", function(e){	//点击结束上传按钮
+					// console.log('点击结束上传2');
+					if(ZYFILE.funReturnNeedFiles().length > 0){
+						para.onAlert('您还有文件没有上传完成哦~~');
+					}else{
+						para.onEnd();	//执行结束上传的回调函数
+					}
+					
+	            	// $("#fileImage").click();
 	            });
 				
 				// 绑定上传点击事件
@@ -594,7 +608,7 @@
 					if(ZYFILE.funReturnNeedFiles().length > 0){
 						$("#fileSubmit").click();
 					}else{
-						alert("请先选中文件再点击上传");
+						para.onAlert("请先选中文件再点击上传");
 					}
 	            });
 				

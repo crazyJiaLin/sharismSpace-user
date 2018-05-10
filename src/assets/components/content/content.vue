@@ -1,14 +1,36 @@
 <template>
     <div class="content-wrapper">
         <transition name="router-transition" class="animated">
-            <router-view class="transition-box"></router-view>
-            <!-- <div v-show="show" class="transition-box">.el-fade-in</div> -->
+            <keep-alive>
+                <router-view class="transition-box"></router-view>
+                <!-- <div v-show="show" class="transition-box">.el-fade-in</div> -->
+            </keep-alive>
         </transition>
     </div>
 </template>
 <script>
     export default{
         methods : {
+           
+        },
+        mounted(){
+            let that = this;
+            let timer = setTimeout(function(){
+                that.$notify({
+                    title: '更新v4.0',
+                    message: '加入组价动态缓存，用来记录用户在组件之间切换之前的动作',
+                    type: 'success',
+                    duration : 6000
+                });
+                let timer2 = setTimeout(function(){
+                    that.$notify({
+                        title: '更新v4.1',
+                        message: '静态资源的按需加载+组件的异步加载测试,减小网站开始加载速度，本功能可能会造成一些bug,程序猿已经努力排查了，如果发现及时反馈！',
+                        type: 'success',
+                        duration : 6000
+                    });
+                },500);
+            },1000);
            
         }
     }

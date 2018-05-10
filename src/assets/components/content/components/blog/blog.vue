@@ -1,11 +1,28 @@
 <template>
     <div class="router-view-wrapper">
         <transition name="children-router-view" class="animated">
-            <router-view></router-view>
+            <keep-alive>
+                <router-view :edit-id="editId" @editBlog="goEditBlog($event)"></router-view>
+            </keep-alive>
         </transition>
     </div>
 </template>
-
+<script>
+    export default{
+        data(){
+            return {
+                editId : ''
+            }
+        },
+        methods : {
+            goEditBlog(msg){
+                // console.log('父组件收到了参数'+msg);
+                this.editId = msg;
+                window.location.hash = '#/blog/add'
+            }
+        }
+    }
+</script>
 <style>
     .router-view-wrapper{
         width: 100%;
