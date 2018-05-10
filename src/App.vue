@@ -66,7 +66,7 @@
     width: 100vw;
     height: 100vh;
     min-width: 1340px;
-    overflow: auto;
+    overflow: hidden;
     background-color: #E9EEF3;
     color: #333;
     text-align: center;

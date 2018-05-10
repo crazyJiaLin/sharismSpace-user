@@ -10,7 +10,7 @@
                             </el-breadcrumb-item>
                         </el-breadcrumb>
                         <div class="change-view-btn">
-                            <i class="fa fa-th-large"></i>
+                            <i @click.stop="changeView" class="fa fa-th-large"></i>
                         </div>
                     </div>
                     <div class="album-second-router-wrapper file-second-router-wrapper">
@@ -33,7 +33,7 @@
                                     style="width: 100%"  @selection-change="handleSelectionChange"
                                     v-loading="fileListReqInfo.fileListLoading">
                                     <el-table-column type="selection"  width="60" label-class-name="selection-cjl"></el-table-column>
-                                    <el-table-column label="文件名" :show-overflow-tooltip="true" sortable min-width="150" prop="name">
+                                    <el-table-column label="文件名" :show-overflow-tooltip="true" sortable min-width="150" prop="fileName">
                                         <template slot-scope="scope">
                                             <i :class="scope.row.fileType | fileTypeFilter"></i>
                                             <span :class="scope.row.folder == 1 ? 'is-folder' : ''" :title="scope.row.fileDes"
@@ -42,7 +42,7 @@
                                             </span>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column  show-overflow-tooltip width="50"> 
+                                    <el-table-column show-overflow-tooltip width="50"> 
                                         <template slot-scope="scope">
                                             <el-dropdown @command="operateFile" trigger="click">
                                                 <div class="operate-btns">
@@ -61,7 +61,7 @@
                                           
                                         </template>
                                     </el-table-column>
-                                    <el-table-column  sortable label="大小" width="120"> 
+                                    <el-table-column  sortable label="大小" width="120" prop="fileSize"> 
                                         <template slot-scope="scope">
                                             {{scope.row.fileSize | fileSizeFilter}}
                                         </template>
@@ -124,6 +124,11 @@
 <script>
     import './file.css'
     import moveResource from './move-resource.vue'
+    //富文本
+    import '../../../../Ueditor/ueditor.config.js'
+    import '../../../../Ueditor/ueditor.all.js'
+    import '../../../../Ueditor/lang/zh-cn/zh-cn.js'
+    import '../../../../Ueditor/ueditor.parse.min.js'
     export default{
         components : {
             moveResource
@@ -591,6 +596,17 @@
                         that.getFileList();
                     }
                 });
+            },
+            changeView(){   //切换视图事件
+                this.$notify({
+                    title: '提示',
+                    message: '暂时不支持视图的切换哦，程序员正在努力中 ( ๑ŏ ﹏ ŏ๑ )',
+                    type: 'warning'
+                });
+                // this.$message({
+                //     type : 'info',
+                //     message : ''
+                // })
             },
         },
         mounted(){

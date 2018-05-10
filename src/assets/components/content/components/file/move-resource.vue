@@ -109,7 +109,7 @@
 
             },
             createNewFolder(){  //新建文件夹
-                console.log(this.$refs);
+                // console.log(this.$refs);
                 // Tree.append();
                 let that = this;
                 this.$prompt('新建文件夹', '提示', {
@@ -215,17 +215,13 @@
                 //父级目录id  如果是没有父级目录，而是刚进入文件模块的列表，就空着。
                 //如果是进入某个文件夹，则填写该文件夹的id
                 map['parentId']= that.folderListReqInfo.parentId;
-                //是否是文件夹    1:新建文件夹  2：上传的文件
-                //一般是文件和文件都查询，则空着，如果只查询文件或者只查询文件夹，就设置1或2
-                map['folder']= 1;	
-                //是否被删除 0 未删除  1删除  1用于回收站查询  不写默认全查
-		        map['del']=0;
-                    
+                //要移动的文件id  必填  ，多个用逗号隔开
+                map['ids']= that.ids.toString();
                 var formData=new FormData();
-                formData.append("resourcePageMap",JSON.stringify(map));
+                formData.append("resourceMovePageMap",JSON.stringify(map));
                 $.ajax({
                     type: "post",        
-                    url: window.resourceReqUrl + "/resource/ResourceList",
+                    url: window.resourceReqUrl + "/resource/getMoveResourceList",
                     contentType: false,
                     processData: false,
                     dataType: 'json',

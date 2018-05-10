@@ -20,6 +20,7 @@
     "autoprefixer": "^6.6.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^6.4.1",
+    "babel-plugin-component": "^1.1.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-vue-app": "^1.2.0",

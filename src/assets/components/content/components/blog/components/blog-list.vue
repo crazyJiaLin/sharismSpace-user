@@ -82,8 +82,11 @@
             </div>
             <div class="add-blog-btn-wrapper">
                 <el-button @click.stop="createNewBlog" class="add-blog-btn" type="primary" round>发布博客</el-button>
+                <el-button class="add-blog-btn" plain round icon="fa fa-trash-o">回收站</el-button>
             </div>
-            
+            <div class="add-blog-btn-wrapper">
+                
+            </div>
         </div>
         </div>
         
@@ -92,6 +95,7 @@
 
 <script>
     import BlogNav from './blog-nav.vue'
+    // import '../blog-list.css'
     export default{
         components : {
             BlogNav

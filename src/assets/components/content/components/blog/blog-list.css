@@ -37,7 +37,7 @@
 .second-chilren-router-left-wrapper{
     float: left;
     width: 72%;
-    height: 100%;
+    height: 100vh;
     /* background: #fff; */
     transition: all 1s ease;
     -webkit-transition: all 1s ease;
@@ -191,7 +191,6 @@
 
 /* 个人信息展示 */
 .user-blog-info-wrapper{
-    
     width: 95%;
     height: auto;
     background: #fff;
@@ -367,14 +366,17 @@
     margin: 20px auto;
 }
 .add-blog-btn-wrapper .add-blog-btn{
-    width: 80%;
+    width: 40%;
     padding: 0;
     line-height: 40px;
     box-shadow: 3px 3px 20px 0px rgba(0, 0, 0, .3);
     -webkit-box-shadow: 3px 3px 20px 0px rgba(0, 0, 0, .3);
 }
-.add-blog-btn-wrapper .add-blog-btn span{
-    display: block;
+.add-blog-btn-wrapper .add-blog-btn i{
+    margin-right: 5px;
+}
+/* .add-blog-btn-wrapper .add-blog-btn span{
+    display: inline-block;
     width: 100%;
     height: 100%;
 }
@@ -384,7 +386,7 @@
     display: block;
     width: 100%;
     height: 100%;
-}
+} */
 
 
 

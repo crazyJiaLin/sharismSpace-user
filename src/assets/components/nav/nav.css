@@ -24,19 +24,22 @@
     padding: 0 15px;
     display: inline-block;
     height: 100%;
-   transition: all 1s ease;
-   border-bottom: 2px solid rgba(0, 0, 0, 0);
+    transition: all 1s ease;
+    border-bottom: 2px solid rgba(0, 0, 0, 0);
+}
+
+.router-link-wrapper .router-link:hover{
+    color: #409EFF;
 }
 .router-link-wrapper .router-link.router-link-active{
     color: #333;
 }
-
 .navigation-wrapper{
     width: 100%;
 }
 
 .nav-bottom-line{
-    width: 100px;
+    width: 0;
     height: 2px;
     background: #409EFF;
     position: absolute;

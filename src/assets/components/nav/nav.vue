@@ -20,7 +20,8 @@
                     // {title:'日志管理',link:'/journal'},
                     {title:'相册管理',link:'/album'},
                     {title:'文件管理',link:'/file'},
-                    {title:'网站收藏',link:'/website'}
+                    {title:'网站收藏',link:'/website'},
+                    {title:'回收站',link:'/recyclebin'}
                     
                 ],
                 linkWidth : 0,
@@ -29,12 +30,27 @@
             }
         },
         methods : {
+            initLinkBottomLine(){
+                let that = this;
+                let timer = setTimeout(function(){
+                    that.linkWidth = $('.navigation-wrapper .router-link.router-link-active').innerWidth();
+                    that.linkOffsetLeft = $('.navigation-wrapper .router-link.router-link-active').offset().left;
+                    // console.log(that.linkWidth)
+                    // console.log(that.linkOffsetLeft)
+                    that.linkWrapperLeft = $('.navigation-wrapper').offset().left
+                    let dis = that.linkOffsetLeft - that.linkWrapperLeft;
+                    $('.nav-bottom-line').css({
+                        width : that.linkWidth,
+                        left : dis
+                    });
+                },1000);
+            },
             fixLinkBottomLine(){
-                var that = this;
-                that.linkWidth = $('.navigation-wrapper .router-link.router-link-active').innerWidth(),
-                that.linkOffsetLeft = $('.navigation-wrapper .router-link.router-link-active').offset().left,
+                let that = this;
+                that.linkWidth = $('.navigation-wrapper .router-link.router-link-active').innerWidth();
+                that.linkOffsetLeft = $('.navigation-wrapper .router-link.router-link-active').offset().left;
                 that.linkWrapperLeft = $('.navigation-wrapper').offset().left
-                var dis = that.linkOffsetLeft - that.linkWrapperLeft;
+                let dis = that.linkOffsetLeft - that.linkWrapperLeft;
                 $('.nav-bottom-line').css({
                     width : that.linkWidth,
                     left : dis
@@ -43,7 +59,7 @@
         },
         mounted(){
             var that = this;
-            that.fixLinkBottomLine();
+            that.initLinkBottomLine();
             $(window).resize(function(){
                 that.fixLinkBottomLine();
             });

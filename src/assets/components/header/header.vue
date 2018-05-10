@@ -35,7 +35,7 @@
             return{
                 searchContent : '',
                 searchOption : 0,
-                searchSelect : ['不限','博客管理','日志管理','相册管理','文件管理','网站收藏'],
+                searchSelect : ['不限','博客管理','相册管理','文件管理','网站收藏'],
                 userCenter : ['个人中心','消息','账号设置','反馈','登出']
             }
         },

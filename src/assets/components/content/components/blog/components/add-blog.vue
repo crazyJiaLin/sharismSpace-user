@@ -102,6 +102,12 @@
 </template>
 
 <script>
+    import '../add-blog.css'
+    //富文本
+    import '../../../../../Ueditor/ueditor.config.js'
+    import '../../../../../Ueditor/ueditor.all.js'
+    import '../../../../../Ueditor/lang/zh-cn/zh-cn.js'
+    import '../../../../../Ueditor/ueditor.parse.min.js'
     export default{
         props : {
             editId : String
