@@ -39,6 +39,10 @@
 
 <script>
     import './move-resource.css'
+    import Vue from 'vue'
+    import {Tree} from 'element-ui'
+    Vue.use(Tree);
+    
     // import Tree from 'element-ui'
     export default{
         props : {

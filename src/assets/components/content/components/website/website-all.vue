@@ -2,7 +2,7 @@
     <div class="website-all-wrapper">
         <div class="website-operate-btns-wrapper">
             <!-- 上传组件富文本，隐藏状态 -->
-            <el-button size="medium" type="primary" plain icon="fa fa-plus fa-lg">添加网站</el-button>
+            <el-button @click.stop="addWebsite" size="medium" type="primary" plain icon="fa fa-plus fa-lg">添加网站</el-button>
             <el-button size="medium" type="primary" plain icon="fa fa-folder-open-o">新建书签集</el-button>
             <transition name="el-fade-in">
                 <el-button-group v-show="showBatchBtns" class="website-operate-btns">
@@ -12,7 +12,7 @@
                 </el-button-group>
             </transition>
         </div>
-        <div class="wbesite-all-list-wrapper">
+        <div class="website-all-list-wrapper">
             <el-tree
                 :props="props"
                 :load="loadNode"
@@ -20,68 +20,111 @@
                 ref="tree"
                 :empty-text="websiteListReqInfo.emptyText"
                 node-key="id"
+                show-checkbox
                 :default-expanded-keys="['root']"
                 accordion
                 highlight-current
-               
+                @check-change="handleCheckChange"
                 @node-click="handleNodeClick">
-                <span class="custom-tree-node" slot-scope="{ node, data }">
-                    <span class="website-icon-wrapper">
-                        <i v-if="data.folder == 1 ? true : false" :class="data | websiteIconFilter"></i>
-                        <span class="website-icon" v-if="data.folder == 1 ? false : true">
-                            <img :src="data.websiteIcon" alt="data.folderName">
-                        </span>
+                    <span class="website-tree-node" 
+                        slot-scope="{ node, data }" 
+                        v-html="websiteDOMHTML(data)">
                     </span>
-                    <span>{{ node.label }}</span>                     
-                </span>
             </el-tree>
         </div>
-        
+        <!-- 添加网站对话框 -->
+        <addWebsite v-if="showAddWebsite" @closeAddWebsiteDialog="closeAddWebsiteDialog"></addWebsite>
+          
     </div>
 </template>
 
 <script>
+    import Vue from 'vue'
+    import {Tree,Cascader,Icon} from 'element-ui'
+    Vue.use(Tree);
+    Vue.use(Cascader);
+    Vue.use(Icon);
+    const addWebsite = () => import('./add-website.vue');
     export default{
+        components : {
+            addWebsite
+        },
         data(){
             return {
+                showAddWebsite : false, //是否显示添加网站组件
                 showBatchBtns : true,
-                props: {
+                props: {       //全部网站组价tree props
                     label: 'folderName',
-                    children: 'zones'
+                    children: 'zones',
+                    isLeaf : 'leaf'
                 },
-                websiteListReqInfo : {
+                websiteListReqInfo : {      //书签集+网站列表信息请求字段
                     isChoosed : false,  //默认没有选择
                     pageNum : 1,
                     pageSize : 0,
                     parentId : 'root',
                     emptyText : '正在加载。。。'
                 },
-                count: 1
+                
             }
         },
         methods : {
+            closeAddWebsiteDialog(){
+                this.showAddWebsite = false;
+            },
+            addWebsite(){   //显示添加网站组件
+                this.showAddWebsite = true;
+            },
+            websiteDOMHTML(data){   //用于渲染tree中的dom节点函数
+                if(data.folder == 1){  //说明是文件夹，返回文件夹DOM显示
+                    return `
+                        <i class="fa fa-folder"></i>
+                        ${data.folderName}
+                    `
+                }
+                //如果不是文件夹，就返回相应的网站dom结构
+                return `
+                    <a class="website-link-wrapper clearfix" href="http://${data.websiteUrl}" target="_blank">
+                        <div class="website-link">
+                            <span class="website-icon-wrapper">
+                                <img src="${data.websiteIcon}" alt="${data.folderName}">
+                            </span>
+                            ${data.websiteName} (${data.websiteUrl})
+                        </div>
+                    </a>
+                `;
+                //后期功能，如果需要添加单个网站修改，则加入到website-link-wrapper中
+                // <div class="operate-wrapper">
+                //     <i class="fa fa-arrows"></i>
+                //     <i class="fa fa-edit"></i>
+                //     <i class="fa fa-trash-o"></i>
+                // </div>
+            },
+            clickNode(){
+                console.log('点击节点');
+            },
+            handleCheckChange(data, checked, indeterminate) {   //选中tree中的复选框
+                // console.log(data, checked, indeterminate);
+            },
             handleNodeClick(data) {     //点击tree节点函数，将查询id变为当前点击的id
-                console.log(data);
+                // console.log(data);
                 this.websiteListReqInfo.isChoosed = true;
                 this.websiteListReqInfo.parentId = data.id;
-            },
-            renderContent(h, { node, data, store }) {   //tree的渲染节点返回数据
-                console.log(node);
-                return (
-                <span>
-                    <span class="webiste-icon">{node.id}</span>
-                    <span>{node.label}</span>
-                </span>);
             },
             loadNode(node, resolve) {   //Tree懒加载函数
                 let that = this;
                 if (node.level === 0) { 
-                    return resolve([{folderName : '全部书签', id:'root', folder:1}]);
+                    return resolve([{folderName : '全部书签', id:'root', folder:1 }]);
                     that.websiteListReqInfo.parentId = 'root';
                 }else{
                     that.websiteListReqInfo.parentId = node.data.id;
                 }
                 that.getWebsiteList(function(results){
+                    for(let i=0; i<results.length; i++){
+                        if(results[i].folder == 0){ //说明是网站，设置为叶子节点
+                            results[i].leaf = true;
+                        }
+                    }
                     console.log(results);
                     that.websiteListReqInfo.emptyText = '暂无数据';
                     resolve(results);
@@ -130,7 +173,7 @@
             },
         },
         mounted(){
-            this.getWebsiteList();
+            this.getWebsiteList();  //获取收藏网站列表信息
         }
     }
 </script>

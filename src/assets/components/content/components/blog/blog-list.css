@@ -1,3 +1,11 @@
+.clearfix::after{
+    width: 0;
+    height: 0;
+    content: '';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
 /* 整体布局 */
 .second-chilren-router-wrapper{
     width: 100%;

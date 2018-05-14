@@ -12,6 +12,7 @@
 </template>
     
 <script>
+    import './nav.css'
     export default{
         data() {
             return{

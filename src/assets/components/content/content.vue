@@ -17,8 +17,8 @@
             let that = this;
             let timer = setTimeout(function(){
                 that.$notify({
-                    title: '更新v4.0',
-                    message: '加入组价动态缓存，用来记录用户在组件之间切换之前的动作',
+                    title: '更新v4.2',
+                    message: '再度使用异步加载组件，加快网页相应速度，哪怕是多一毫秒也不行！！',
                     type: 'success',
                     duration : 6000
                 });

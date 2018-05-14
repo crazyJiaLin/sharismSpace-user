@@ -2,7 +2,7 @@
   <div id="app">
       <el-container>
         <el-header class="active">
-          <Header></Header>
+          <myHeader></myHeader>
           <div class="header-fold-btn" @click="foldHeader">
               <i class="fa fa-angle-double-up"></i>
           </div>
@@ -13,11 +13,16 @@
 </template>
 
 <script>
+  import Vue from 'vue'
+  import {Header,Aside,Main} from 'element-ui'
+  Vue.use(Header);
+  Vue.use(Aside);
+  Vue.use(Main);
   import Content from './assets/components/content/content.vue'
-  import Header from './assets/components/header/header.vue'
+  import myHeader from './assets/components/header/header.vue'
   export default {
     components:{
-      Header,
+      myHeader,
       Content
     },
     data() {

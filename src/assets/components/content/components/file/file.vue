@@ -123,8 +123,61 @@
 
 <script>
     import './file.css'
-    import moveResource from './move-resource.vue'
-    //富文本
+    const moveResource = () => import('./move-resource.vue');
+    import Vue from 'vue'
+    // 文件类型过滤器，传入文件名，返回图标class
+    Vue.filter('fileTypeFilter', function(value) {
+        value = JSON.parse(value); 
+        // console.log(value);
+        if(value.isFolder == 1){
+            return 'fa fa-folder';  //文件夹类型
+        }
+
+        if(value.name.lastIndexOf('.') >= 0){  //说明有后缀，不是文件夹
+            var suffix = value.name.toString().slice(value.name.lastIndexOf('.'));
+            // console.log(suffix);
+            if(suffix == '.txt'){   //文本类型
+            return 'fa fa-file-text-o';
+            }else  if(/\.(js|html|css)/i.test(suffix)){  //代码类型
+            return 'fa fa-file-code-o';
+            }else  if(/\.(jpg|jpeg|png|svg|gif|bmp)/i.test(suffix)){  //图片类型
+            return 'fa fa-file-image-o';
+            }else  if(/\.(mp3|wma|wav|mod|ra|cd|md|asf)/i.test(suffix)){  //声音类型
+            return 'fa fa-file-sound-o';
+            }else  if(/\.(mp4|avi|mov|mpeg|mpg|qt|ram|viv)/i.test(suffix)){  //视频类型
+            return 'fa fa-file-video-o';
+            }else  if(/\.(zip|rar|tar|gzip|cab|uue|arj|iso)/i.test(suffix)){  //压缩类型
+            return 'fa fa-file-zip-o';
+            }else  if(/\.(pdf)/i.test(suffix)){  //word
+            return 'fa fa-file-pdf-o';
+            }else  if(/\.(doc|docx)/i.test(suffix)){  //pdf
+            return 'fa fa-file-word-o';
+            }else  if(/\.(xls|xlsx)/i.test(suffix)){  //excel
+            return 'fa fa-file-excel-o';
+            }else  if(/\.(ppt|pptx)/i.test(suffix)){  //ppt
+            return 'fa fa-file-powerpoint-o';
+            }else{  //其他文件类型
+            return 'fa fa-file-o';
+            }
+        }else{  //其他文件类型
+            return 'fa fa-file-o';
+        }
+    });
+    Vue.filter('fileSizeFilter', function(value) {
+    value = parseFloat(value);
+        // console.log(value);
+        if(value<0){
+            return '-';
+        }else if(value>=0 && value <1024){
+            return value.toFixed(2) + 'K';
+        }else if(value>=1024 && value <1048576){
+            return (value/1024).toFixed(2) + 'M';
+        }else if(value>=1048576){
+            return (value/1048576).toFixed(2) + 'G';
+        }
+    });
+    
+    //富文本资源
     import '../../../../Ueditor/ueditor.config.js'
     import '../../../../Ueditor/ueditor.all.js'
     import '../../../../Ueditor/lang/zh-cn/zh-cn.js'

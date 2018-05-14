@@ -26,6 +26,7 @@
     </header>
 </template>
 <script>
+    import './header.css'
     import Nav from '../nav/nav.vue'
     export default{
         components:{

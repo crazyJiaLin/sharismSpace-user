@@ -14,7 +14,6 @@
 }
 .website-operate-btns-wrapper{
     width: 100%;
-    /* background: tomato; */
 }
 .website-operate-btns{
     float: right;
@@ -23,25 +22,66 @@
     margin-right: 5px;
 }
 
-.wbesite-all-list-wrapper{
+.website-all-list-wrapper{
     width: 100%;
     height: auto;
     margin-top: 20px;
-    /* padding: 20px; */
-    /* background: tomato; */
 }
 
 /* 网站树 */
+.website-tree-node .fa-folder{
+    color: rgb(255, 214, 87);
+    margin-right: 5px;
+}
+.website-tree-node{
+    width: 100%;
+    line-height: 22px;
+   
+}
+.website-link-wrapper{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.website-link-wrapper:hover{
+    color: #409EFF;
+}
+
 .website-icon-wrapper{
     display: inline-block;
     width: 20px;
     height: 20px;
+    margin:0 10px;
 }
-.website-icon{
-    width:100%;
-    height: 100%;
-}
-.website-icon img{
+.website-icon-wrapper img{
     width: 100%;
     height: 100%;
+}
+.website-link{
+    display: flex;
+    align-items: center;
+    float: left;
+}
+.operate-wrapper{
+    float: right;
+    margin-right: 100px;
+}
+.operate-wrapper i{
+    margin: 0 10px;
+    display: none;
+    color: rgb(0, 99, 197);
+}
+
+.website-link-wrapper:hover i{
+   display: inline-block;
+}
+.operate-wrapper i:hover{
+    color: #409EFF;
+}
+.operate-wrapper i.fa-trash-o{
+    color: rgb(173, 10, 10);
+    
+}
+.operate-wrapper i.fa-trash-o:hover{
+    color: #f56c6c;
 }

@@ -29,10 +29,24 @@
 </template>
 
 <script>
+    import Vue from 'vue'
+    //自定义过滤器，取得字符串前10位
+    Vue.filter('filterPhotoName', function(value) {
+    // console.log(value.lastIndexOf('.'));
+    if(value.lastIndexOf('.') >= 0){
+        value = value.toString().slice(0,value.lastIndexOf('.'));
+    }
+    if(value.length > 10){
+        // console.log('字符串大于十个过滤'+value);
+        return value.substring(0,10) + '...';
+    }
+    return value;
+    });
+
     import './album-detail.css'
     import '../../../../js/cascade.js'
-    import UploadImg from '../../../upload/upload-img.vue'
-    import PhotoDetail from './photo-detail.vue'
+    const UploadImg = () => import('../../../upload/upload-img.vue')
+    const PhotoDetail = () => import('./photo-detail.vue')
     export default{
         components : {
             UploadImg,
