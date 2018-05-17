@@ -124,7 +124,7 @@
                     blogType : '',              //二级分类
                     draft : 0,                  //草稿箱列表 draft=1    不加时默认都查询
                     privacySet : 1,             //按照权限查询（公开/隐藏）  privacySet=1公开  0 隐藏  不加默认都查询
-                    arrange : 'ASC'             //列排序  按照时间降序 DESC  升序 ASC  不加默认按时间降序
+                    arrange : 'DESC'             //列排序  按照时间降序 DESC  升序 ASC  不加默认按时间降序
                 },
                 blogUserInfo : {
                     userNickname : 'crazyjialin',

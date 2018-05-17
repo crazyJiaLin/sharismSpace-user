@@ -1,9 +1,9 @@
 <template>
     <div class="router-view-wrapper">
         <transition name="children-router-view" class="animated">
-            <keep-alive>
+            <!-- <keep-alive> -->
                 <router-view :edit-id="editId" @editBlog="goEditBlog($event)"></router-view>
-            </keep-alive>
+            <!-- </keep-alive> -->
         </transition>
     </div>
 </template>

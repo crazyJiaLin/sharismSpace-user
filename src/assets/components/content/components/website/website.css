@@ -36,7 +36,6 @@
 .website-tree-node{
     width: 100%;
     line-height: 22px;
-   
 }
 .website-link-wrapper{
     display: block;
@@ -45,6 +44,7 @@
 }
 .website-link-wrapper:hover{
     color: #409EFF;
+    font-size: 1.05em;
 }
 
 .website-icon-wrapper{
@@ -52,6 +52,10 @@
     width: 20px;
     height: 20px;
     margin:0 10px;
+}
+.website-link-wrapper:hover .website-icon-wrapper{
+    width: 22px;
+    height: 22px;
 }
 .website-icon-wrapper img{
     width: 100%;
@@ -61,6 +65,13 @@
     display: flex;
     align-items: center;
     float: left;
+}
+.website-url-wrapper{
+    display: none;
+    margin-left: 10px;
+}
+.website-link-wrapper:hover .website-url-wrapper{
+    display: inline;
 }
 .operate-wrapper{
     float: right;
@@ -80,8 +91,31 @@
 }
 .operate-wrapper i.fa-trash-o{
     color: rgb(173, 10, 10);
-    
 }
 .operate-wrapper i.fa-trash-o:hover{
     color: #f56c6c;
 }
+
+/* 添加网站组件样式 */
+.website-icon-selector-file-input{
+   width: 0;
+   height: 0;
+   visibility: hidden;
+}
+.show-icon-wrapper {
+    display: flex;
+}
+.show-icon-wrapper .show-icon{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    overflow: hidden;
+}
+.show-icon-wrapper .show-icon img{
+    width: 100%;
+    height: 100%;
+}
+
