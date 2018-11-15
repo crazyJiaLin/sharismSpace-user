@@ -1,0 +1,15 @@
+{
+  "presets": ["vue-app"],
+  "ignore": [
+    "./src/assets/Ueditor/ueditor.all.js"
+  ],
+  "plugins": [
+    [
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "theme-chalk"
+      }
+    ]
+  ]
+}
