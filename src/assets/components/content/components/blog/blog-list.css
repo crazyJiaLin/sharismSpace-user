@@ -1,0 +1,493 @@
+/* 整体布局 */
+.second-chilren-router-wrapper{
+    width: 100%;
+    height: 100%;
+    /* background: tan; */
+    overflow-y: auto;
+    position: relative;
+    overflow: hidden;
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+}
+.second-chilren-router-wrapper.show-blog-nav{
+    width: 80%;
+    margin-left: 20%;
+}
+/* 导航栏 */
+.blog-nav-wrapper{
+    width: 0px;
+    height: 100vh;
+    background: #fff;
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 4px 1px 10px 0 rgba(0, 0, 0, .3);
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+    /* overflow: hidden; */
+}
+.blog-nav-wrapper.active{
+    width: 320px;
+    box-shadow: 7px 0px 20px 0 rgba(0, 0, 0, .3);
+    -webkit-box-shadow: 7px 0px 20px 0 rgba(0, 0, 0, .3);
+}
+
+/* 博客列表布局 */
+.second-chilren-router-left-wrapper{
+    float: left;
+    width: 72%;
+    height: 100vh;
+    /* background: #fff; */
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+    overflow: hidden;
+    position: relative;
+}
+.second-chilren-router-right-wrapper{
+    float: right;
+    width: 28%;
+    height: 100%;
+    /* background: yellowgreen; */
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+}
+.second-chilren-router-wrapper.close-user .second-chilren-router-left-wrapper{
+    width: 100%;
+}
+.second-chilren-router-wrapper.close-user .second-chilren-router-right-wrapper{
+   width: 0;
+   flex: 0;
+}
+
+
+/* 分块模块样式 */
+
+/* 博客导航 */
+/* 显示博客按钮按钮 */
+.show-blog-nav-btn{
+    width: 20px;
+    height: 30px;
+    line-height: 30px;
+    background: #f8f8f8;
+    border-radius: 0 50% 50% 0;
+    box-shadow: 6px 0px 20px 0 rgba(0, 0, 0, .3);
+    position: absolute;
+    cursor: pointer;
+    right: -20px;
+    top: 100px;
+}
+.blog-nav{
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* 博客列表 */
+.blog-list-wrapper{
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.blog-list{
+    width: 95%;
+    height: auto;
+    margin: 15px auto;
+    background: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 1px 1px 20px 0 rgba(0, 0, 0, .3)
+}
+.blog-list .blog-item{
+    width: 95%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0 auto;
+    border-top: 1px dashed #ccc;
+    position: relative;
+}
+.blog-list .blog-item:first-child{
+    border-top: hidden;
+}
+.blog-list .blog-list-loading{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 20px;
+    color: #888;
+}
+.blog-list .blog-list-loading i{
+    font-size: 1.5em;
+    color: #444;
+}
+.blog-list .blog-item a{
+    box-sizing: border-box;
+    padding: 15px 0 5px;
+    display: block;
+    width: 100%;
+    height: auto;
+    line-height: 30px;
+    text-decoration: none;
+    color: #888;
+}
+.blog-list .blog-item .blog-title{
+    line-height: 30px;
+    font-size: 1.8em;
+    font-weight: bold;
+    text-align: left;
+    color: #333;
+}
+.blog-list .blog-item p{
+    line-height: 25px;
+    text-align: left;
+    margin-top: 20px;
+    text-indent: 2em;
+    font-size: 1em;
+    color: #555;
+}
+.blog-list .blog-item .blog-info-wrapper{
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    margin-top: 10px;
+    /* background: tomato; */
+}
+.blog-info-wrapper .blog-info{
+    float: left;
+    margin: 0 15px;
+}
+.blog-info-wrapper .blog-info:hover{
+    color:#555;
+}
+.blog-info-wrapper .blog-info i{
+    font-size: 1.2em;
+    margin-right: 5px;
+}
+.blog-info-wrapper .blog-management{
+    float: right;
+    margin-right: 30px;
+    width: 150px;
+    height: 100%;
+}
+.blog-management button{
+    font-size: 1.5em;
+    line-height: 35px;
+    padding: 0;
+    margin: 0 15px;
+    display: none;
+}
+.blog-management button.delete-blog{
+    color: #f56c6c;
+}
+.blog-management button.delete-blog:hover{
+    color:#fc8a8a;
+}
+.blog-item:hover .blog-management button{
+    display: inline-block;
+}
+
+
+/* 个人信息展示 */
+.user-blog-info-wrapper{
+    width: 95%;
+    height: auto;
+    background: #fff;
+    margin:15px auto 0;
+    border-radius: 5px;
+    box-shadow: 1px 1px 20px 0 rgba(0, 0, 0, .3);
+    position: relative;
+}
+/* 隐藏用户信息按钮 */
+.hide-user-info-btn{
+    width: 20px;
+    height: 30px;
+    border-radius: 50% 0 0 50%;
+    background: #f8f8f8;
+    line-height: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    position: absolute;
+    top: 30px;
+    left: -20px;
+    box-shadow: -5px 0px 20px 0 rgba(0, 0, 0, .3);
+}
+.user-blog-info{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    padding: 15px;
+    /* background: tomato; */
+    overflow: hidden;
+}
+/* 博主头像 */
+.user-portrait{
+    display: none;
+}
+.user-blog-info .user-portrait-wrapper{
+    width: 250px;
+    height: 250px;
+    margin: 0 auto 30px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    background:  center center no-repeat;
+    background-image: url('./img/default-user-portrait.jpeg');
+    background-size: 100%;
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+}
+.user-blog-info .user-portrait-wrapper:hover {
+    background-size: 110%;
+}
+.user-blog-info .user-portrait-wrapper .user-info-wrapper{
+    box-sizing: border-box;
+    padding-top: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+    position: relative;
+}
+.user-blog-info .user-portrait-wrapper:hover .user-info-wrapper{
+    background: rgba(0, 0, 0, .5);
+}
+.portrait-line{
+    position: absolute;
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+    background: #fff;
+}
+.line-top{
+    left: 20px;
+    top: 30px;
+    width: 0;
+    height: 4px;
+}
+.line-bottom{
+    right: 20px;
+    bottom: 30px;
+    width: 0;
+    height: 4px;
+}
+.line-left{
+    left: 30px;
+    bottom: 20px;
+    width: 4px;
+    height: 0;
+}
+.line-right{
+    right: 30px;
+    top: 20px;
+    width: 4px;
+    height: 0;
+}
+.user-blog-info .user-portrait-wrapper:hover .line-top{
+    width: 210px;
+}
+.user-blog-info .user-portrait-wrapper:hover .line-bottom{
+    width: 210px;
+}
+.user-blog-info .user-portrait-wrapper:hover .line-left{
+    height: 210px;
+}
+.user-blog-info .user-portrait-wrapper:hover .line-right{
+    height: 210px;
+}
+
+.user-info{
+    /* height: 30px; */
+    line-height: 30px;
+    height: 30px;
+    margin: 20px auto;
+    color: #fff;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+}
+.user-blog-info .user-portrait-wrapper:hover .user-info{
+    opacity: 1;
+}
+.user-nickname{
+    margin-top: 50px;
+    font-size: 1.3em;
+}
+.mail{
+    font-size: .9em;
+}
+.user-info .user-sex .fa-mars{
+    color: #409EFF;
+}
+.user-info .user-sex .fa-venus{
+    color: #f56c6c;
+}
+
+/* 博主信息 */
+.user-blog-info .blog-info-wrapper{
+    display: flex;
+    display: -webkit-flex;
+    width: 100%;
+    height: 70px;
+    margin: 0 auto;
+}
+.user-info-item{
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.blog-user-info{
+    flex: 1;
+    line-height: 35px;
+}
+.blog-info-label{
+    height: 35px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color:#999;
+}
+.blog-info-number{
+    line-height: 35px;
+    line-height: 35px;
+    font-weight: bold;
+    color:#333;
+}
+.add-blog-btn-wrapper{
+    width: 90%;
+    min-width: 250px;
+    height: 50px;
+    line-height: 50px;
+    margin: 20px auto;
+}
+.add-blog-btn-wrapper .add-blog-btn{
+    width: 40%;
+    padding: 0;
+    line-height: 40px;
+    box-shadow: 3px 3px 20px 0px rgba(0, 0, 0, .3);
+    -webkit-box-shadow: 3px 3px 20px 0px rgba(0, 0, 0, .3);
+}
+.add-blog-btn-wrapper .add-blog-btn i{
+    margin-right: 5px;
+}
+/* .add-blog-btn-wrapper .add-blog-btn span{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+.add-blog-btn-wrapper .add-blog-btn a{
+    color: #fff;
+    font-size: 1.2em;
+    display: block;
+    width: 100%;
+    height: 100%;
+} */
+
+
+
+/* 左侧博客列表 */
+.add-blog-folder-wrapper{
+    width: 100%;
+    height: 40px;
+    overflow: hidden;
+    line-height: 30px;
+    margin-top: 70px;
+    transition: all .7s ease;
+    -webkit-transition: all .7s ease;
+}
+.add-blog-folder-wrapper.active{
+    height: 150px;
+}
+.blog-nav .blog-nav-content{
+    width: 320px;
+    margin-top: 10px;
+    text-align: left;
+}
+.el-main.active .blog-nav .add-blog-folder-wrapper{
+    margin-top: 20px;
+}
+.add-blog-folder-wrapper .el-button{
+    margin-bottom: 20px;
+}
+
+.blog-nav .el-submenu__title{
+    background: #f6f6f6;
+}
+.blog-nav .el-submenu__title .eidt-folder-btn{
+    font-size: 18px;
+    position: absolute;
+    top: 20px;
+    right: 80px;
+}
+.blog-nav .el-submenu__title .delete-folder-btn{
+    font-size: 18px;
+    position: absolute;
+    top: 20px;
+    right: 45px;
+}
+.blog-nav .el-submenu__title .eidt-folder-btn:hover{
+    color: #409EFF;
+}
+.blog-nav .el-submenu__title .delete-folder-btn:hover{
+    color:#f56c6c;
+}
+.blog-nav-content .el-submenu__title .fa{
+    display: none;
+}
+.blog-nav-content .el-submenu__title:hover .fa{
+    display: block;
+}
+/* 添加二级分类 */
+.add-blog-type-wrapper{
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    border-bottom: 1px dashed #ccc;
+    text-align: center;
+    overflow: hidden;
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+}
+.add-blog-type-wrapper.active{
+    height: 80px;
+}
+/* 操作二级分类 */
+.manage-blog-type-btn{
+    position: absolute;
+    top: 18px;
+    font-size: 16px;
+    right: 40px;
+    display: none;
+}
+.el-menu-item:hover .manage-blog-type-btn{
+    display: block;
+}
+.manage-blog-type-btn.eidt-blog-type-btn{
+    right: 70px;
+}
+.manage-blog-type-btn.eidt-blog-type-btn:hover{
+    color: #409EFF;
+}
+.manage-blog-type-btn.delete-blog-type-btn:hover{
+    color:#f56c6c;
+}
+
+.no-blog-type-wrapper{
+    box-sizing: border-box;
+    width: 100%;
+    width: 320px;
+    padding: 0 20px;
+    overflow: hidden;
+    line-height: 30px;
+    /* background: #f56c6c; */
+    margin-top: 80px;
+}
+
+.no-blog-list-wrapper{
+    line-height: 150px;
+}

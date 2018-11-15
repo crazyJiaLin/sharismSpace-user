@@ -1,0 +1,28 @@
+.folder-list-wrapper{
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    overflow: auto;
+    padding: 20px 20px 10px;
+}
+.move-resource-footer{
+    height: 40px;
+    /* background: tomato; */
+}
+.move-resource-footer{
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+.folder-btn-left-wrapper{
+    float: left;
+    width: 200px;
+    height: 100%;
+    /* background: yellow; */
+}
+.folder-btn-right-wrapper{
+    float: right;
+    width: 300px;
+    height: 100%;
+    /* background: yellow; */
+}
