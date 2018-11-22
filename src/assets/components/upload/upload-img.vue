@@ -67,9 +67,9 @@
                         console.log(file)
                         var image = new Image();
                         image.onload = function () {
-                            response.width = this.width;
-                            response.height = this.height;
-                            console.log(response);
+                            response.width = parseInt(this.width);
+                            response.height = parseInt(this.height);
+                            // console.log(response);
                             that.uploadImgList.push(response);
                         };
                         image.src = response.url;

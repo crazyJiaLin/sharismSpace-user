@@ -10,7 +10,7 @@
                </div>
                <div class="photo-wrapper">
                     <div class="img-wrapper">
-                        <img :src="item.photoPath" :alt="item.photoName" :height="item.width&&item.height ? (item.height/item.width)*250 : 'auto'">
+                        <img :src="item.photoPath" :alt="item.photoName" :height="item.photoWidth&&item.photoHeight ? Math.floor((item.photoWidth/item.photoHeight)*250)+'px' : 'auto'">
                     </div>
                     <div class="img-detail-wrapper">
                         <div class="photo-name" :title="item.photoName">{{item.photoName | filterPhotoName}}</div>
@@ -159,9 +159,11 @@
             },
             uploadEnd(uploadImgList){   //父组件接到了子组件传递的内容,开始给相册添加照片
                 console.log('上传的图片 ',uploadImgList);
-                let that = this;    
-                that.uploadImgLoading = true;   //打开loading
-                let count = 0;  // 开始计数，当count达到数组长度时，说明全部上传完成，关闭loading   
+                let that = this;
+                if(uploadImgList.length>0){
+                    that.uploadImgLoading = true;   //打开loading
+                }
+                let count = 0;  // 开始计数，当count达到数组长度时，说明全部上传完成，关闭loading
                 console.log(that.albumId);
                 for(let i=0;i<uploadImgList.length;i++){// 开始逐条上传
                     var map = {};
@@ -176,7 +178,7 @@
                     //照片类型
                     map['photoType']=uploadImgList[i].fileType;
                     //照片大小
-                    map['photoSize']=uploadImgList[i].size;
+                    map['photoSize']=Math.floor(uploadImgList[i].size);
                     //照片高
                     map['photoHeight']=uploadImgList[i].width;
                     //照片宽
@@ -210,8 +212,8 @@
                                 },true);
                             }
                         }, 				 
-                        error:function(){  
-                            alert("服务器开小差了~稍后重试 ^8^");  
+                        error:function(){
+                            that.$message.error("服务器开小差了~稍后重试 ^8^");
                         }  
                     });
                 }
@@ -225,8 +227,10 @@
                 let that = this;
                 if(selectFromFirstPage){
                     that.photoReqInfo.pageNum = 1;
+                    that.photoReqInfo.hasNextPage = true;
                 }
                 // console.log('开始检索 '+that.albumName+' 相册');
+                // console.log('photoReqInfo: ',that.photoReqInfo)
                 if(that.photoReqInfo.hasNextPage){  //如果有下一页
                     var map = {};
                     //当前页号
@@ -237,6 +241,7 @@
                     map['albumName']= that.albumName;
                     //查询已经删除的照片（回收站）时  del=1， 不加默认都查询
 		            map['del']=0;
+		            console.log(map)
                     var formData=new FormData();
                     formData.append("photoPageList",JSON.stringify(map));
                     $.ajax({

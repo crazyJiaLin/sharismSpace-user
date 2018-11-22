@@ -114,7 +114,7 @@
                 if(to.indexOf('/album/detail/') != -1){ //说明进入相片详情组件
                     let arr =  to.split('/')
                     let albumName = decodeURIComponent(arr[arr.length-2]);
-                    console.log(albumName);
+                    // console.log(albumName);
                     let breadObj = {path:{},breadcrumb:albumName};
                     this.breadcrumbList.push(breadObj);
                }else if(to.indexOf('/album/list') != -1){

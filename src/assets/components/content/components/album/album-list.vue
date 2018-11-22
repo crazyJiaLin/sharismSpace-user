@@ -391,7 +391,7 @@
             },
             selectAlbumIcon($event,command){    //选择了图片后，上传图片并显示预览图
                 let that = this;
-                console.log(command);   //通过传入参数判断是更新还是新建
+                // console.log(command);   //通过传入参数判断是更新还是新建
                 if(command == 'new'){
                     that.createAlbumForm.previewAlbumIconHTML = '<i class="fa fa-spinner fa-spin"></i>&nbsp;上传中...';
                 }else{
