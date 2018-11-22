@@ -74,8 +74,8 @@
     export default{
         watch : {
             $route(to,from){
-                console.log('路由改变了');
-                console.log(to);
+                // console.log('路由改变了');
+                // console.log(to);
               this.setBreadByParams(to.path);
             }
         },
@@ -113,7 +113,7 @@
             setBreadByParams(to){
                 if(to.indexOf('/album/detail/') != -1){ //说明进入相片详情组件
                     let arr =  to.split('/')
-                    let albumName = decodeURIComponent(arr[arr.length-1]);
+                    let albumName = decodeURIComponent(arr[arr.length-2]);
                     console.log(albumName);
                     let breadObj = {path:{},breadcrumb:albumName};
                     this.breadcrumbList.push(breadObj);

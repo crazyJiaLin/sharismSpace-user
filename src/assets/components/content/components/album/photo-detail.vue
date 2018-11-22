@@ -1,5 +1,5 @@
 <template>
-    <div class="show-photo-detail-wrapper" >
+    <div class="show-photo-detail-wrapper">
         <div @click.stop="closeDetailWrapper" class="close-photo-detail-wrapper-btn">
             <i class="fa fa-close"></i>
         </div>
@@ -140,7 +140,7 @@
                 //相册名称
                 map['albumName']= that.showPhotoDetailInfo.albumName;
                 //查询存在的相册列表，如果查询回收站里的列表 isDel=1 
-                map['isDel']= 0;	 
+                map['del']= 0;
                 //列排序  按照时间降序 DESC  升序 ASC  不加默认按时间降序
                 map['arrange']= "DESC";
                 var formData=new FormData();
@@ -215,9 +215,19 @@
            
         },
         mounted(){
-            console.log(this.showPhotoDetailInfo);
+            // console.log(this.showPhotoDetailInfo);
+            let that = this;
             this.selectPhotoInfo.pageNum = this.showPhotoDetailInfo.photoIndex;
             this.selectPhoto();
+            $(window).on('keyup.detail',function(ev){
+                ev = ev || window.event;
+                if(ev.keyCode == 27){
+                    that.closeDetailWrapper();
+                }
+            })
+        },
+        destroyed(){
+            $(window).off('keyup.detail');
         }
     }
 </script>

@@ -62,10 +62,17 @@
                         }
                     },
                     onSuccess: function(file,response){                    // 文件上传成功的回调方法
-                        console.info("此文件上传成功：");
-                        console.info(file);
-                        console.info(response);
-                        that.uploadImgList.push(JSON.parse(response));
+                        // console.info("此文件上传成功：");
+                        response  = JSON.parse(response);
+                        console.log(file)
+                        var image = new Image();
+                        image.onload = function () {
+                            response.width = this.width;
+                            response.height = this.height;
+                            console.log(response);
+                            that.uploadImgList.push(response);
+                        };
+                        image.src = response.url;
                     },
                     onFailure: function(file){                    // 文件上传失败的回调方法
                         console.info("此文件上传失败：");

@@ -246,7 +246,8 @@
                 if($($event.target).parents('.album-setting').length == 0){ //判断，如果不是setting按钮，跳转到详情
                     // var queryId = $($event.target).parents('.album-box ').attr('albumid');
                     var albumName = $($event.target).parents('.album-box ').attr('albumname');
-                    window.location.hash = '#/album/detail/'+albumName;
+                    var albumId = $($event.target).parents('.album-box ').attr('albumid');
+                    window.location.hash = '#/album/detail/'+albumName+'/'+albumId;
                 }
                 
             },

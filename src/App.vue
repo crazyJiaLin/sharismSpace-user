@@ -41,7 +41,7 @@
                 $('.header-fold-btn i').removeClass('fa-rotate-180');
                 $('.el-main ').removeClass('active');
             }
-            
+
         }
       }
     }

@@ -10,7 +10,7 @@
                </div>
                <div class="photo-wrapper">
                     <div class="img-wrapper">
-                        <img :src="item.photoPath" :alt="item.photoName">
+                        <img :src="item.photoPath" :alt="item.photoName" :height="item.width&&item.height ? (item.height/item.width)*250 : 'auto'">
                     </div>
                     <div class="img-detail-wrapper">
                         <div class="photo-name" :title="item.photoName">{{item.photoName | filterPhotoName}}</div>
@@ -55,14 +55,18 @@
         computed:{
            albumName(){
                return this.$route.params.albumName;
-           }
+           },
+            albumId(){
+                return this.$route.params.albumId;
+            }
         },
         data(){
             return{
                 showPhotoDetailInfo : {
                     queryId : '',   //照片id
                     photoIndex : 1, //照片索引
-                    albumName : this.$route.params.albumName  //相册名称
+                    albumName : this.$route.params.albumName,  //相册名称
+                    albumId : this.$route.params.albumId  //相册名称
                 },
                 showPhotoDetailWrapper : false,
                 Cascade : null, 
@@ -134,8 +138,8 @@
                                             that.photoReqInfo.cascadeWrapperLoading = false;
                                             that.photoReqInfo.getPhotoListBool = true;
                                         });
-                                    },10);
-                                });   
+                                    },100                                                  );
+                                },true);
                             }else{
                                 that.$message.error(data.message);
                             }
@@ -154,31 +158,41 @@
 
             },
             uploadEnd(uploadImgList){   //父组件接到了子组件传递的内容,开始给相册添加照片
-                console.log(uploadImgList); 
+                console.log('上传的图片 ',uploadImgList);
                 let that = this;    
                 that.uploadImgLoading = true;   //打开loading
                 let count = 0;  // 开始计数，当count达到数组长度时，说明全部上传完成，关闭loading   
-                console.log(that.albumName);             
+                console.log(that.albumId);
                 for(let i=0;i<uploadImgList.length;i++){// 开始逐条上传
                     var map = {};
                     //相册ID
-                    map['albumId']= that.albumName;
+                    map['albumId']= that.albumId;
                     //照片名称
                     map['photoName']= uploadImgList[i].title;
                     //照片描述
                     map['photoDescribe']= "";
                     //照片路径
-                    map['photoPath']= uploadImgList[i].url;			
+                    map['photoPath']= uploadImgList[i].url;
+                    //照片类型
+                    map['photoType']=uploadImgList[i].fileType;
+                    //照片大小
+                    map['photoSize']=uploadImgList[i].size;
+                    //照片高
+                    map['photoHeight']=uploadImgList[i].width;
+                    //照片宽
+                    map['photoWidth']=uploadImgList[i].height;
+                    console.log(map)
                     var formData=new FormData();
                     formData.append("addPhotoMap",JSON.stringify(map));
                     $.ajax({
                         type: "post",  		    
-                        url: window.albumReqUrl + "/photo/addPhotoByAlbumName",
+                        url: window.albumReqUrl + "/photo/addPhoto",
                         contentType: false,
                         processData: false,		  
                         dataType: 'json',
                         data : formData,
-                        success:function(data){	
+                        success:function(data){
+                            console.log(data)
                             count++;
                             if(count >= uploadImgList.length){  //说明全部上传完成
                                 that.$message({
@@ -193,7 +207,7 @@
                                             that.photoReqInfo.getPhotoListBool = true;
                                         });
                                     },1000);
-                                });   
+                                },true);
                             }
                         }, 				 
                         error:function(){  
@@ -207,9 +221,12 @@
                 // console.log(msg);
                 this.showAddPhotoDialog = false;
             },
-            selectAlbumByName(callback){
+            selectAlbumByName(callback,selectFromFirstPage){
                 let that = this;
-                console.log('开始检索 '+that.albumName+' 相册');
+                if(selectFromFirstPage){
+                    that.photoReqInfo.pageNum = 1;
+                }
+                // console.log('开始检索 '+that.albumName+' 相册');
                 if(that.photoReqInfo.hasNextPage){  //如果有下一页
                     var map = {};
                     //当前页号
@@ -219,7 +236,7 @@
                     //相册名称
                     map['albumName']= that.albumName;
                     //查询已经删除的照片（回收站）时  del=1， 不加默认都查询
-		            map['isDel']=0;
+		            map['del']=0;
                     var formData=new FormData();
                     formData.append("photoPageList",JSON.stringify(map));
                     $.ajax({
@@ -232,10 +249,15 @@
                         success:function(data){	
                             console.log(data)
                             if(data.code == 1){
-                                console.log('检索成功');
-                                that.photoList = data.value.list;
+                                // console.log('检索成功');
+                                if(selectFromFirstPage){
+                                    that.photoList = data.value.list;
+                                }else{
+                                    that.photoList = that.photoList.concat(data.value.list);
+                                }
                                 that.photoReqInfo.hasNextPage = data.value.hasNextPage; 
-                                that.photoReqInfo.pageSize = that.photoReqInfo.pageSize + 8;    //请求内容+8 
+                                that.photoReqInfo.pageSize = that.photoReqInfo.pageSize;    //请求内容+8
+                                that.photoReqInfo.pageNum++;
                                 that.photoReqInfo.cascadeWrapperLoading = false; //关闭loading
                                 that.isRemindNoMoreImg = false; //请求回来之后，将提示没有更多图片功能打开
                                 //如果有传入回调函数，则执行回调函数中的排序规则，如果没有，默认是arrange排序
@@ -243,7 +265,7 @@
                                     callback();
                                 }else{
                                     that.Cascade.arrangeDOM(0,function(msg){
-                                        console.log(msg);
+                                        // console.log(msg);
                                         that.photoReqInfo.getPhotoListBool = true;  //排序完成后，打开请求开关
                                     });   
                                 }
@@ -346,6 +368,7 @@
             this.listenLeftWrapperTransitionEnd();
             this.bindScrollEvent();
             this.bindWindowResize();
+
         }
     }
 </script>

@@ -8076,9 +8076,9 @@ UE.Editor.defaultOptions = function(editor){
     UE.Editor.prototype.getActionUrl = function (action) {
         //alert(action);//插入图片、视频、文件 判断‘
         if (action == 'uploadimage'||action =="uploadvideo"||action =="uploadfile") {
-            var url = 'http://118.25.46.139:8080/file_server-0.0.1-SNAPSHOT/file/ueditorImage';
+            var url = 'http://118.25.50.160:8080/file_server-0.0.1-SNAPSHOT/file/ueditorImage';
         //  var url = 'http://127.0.0.1:8080/file/ueditorImage';
-            console.info(123);
+        //     console.info(123);
             return url;
         } else {
             return this._bkGetActionUrl.call(this, action);

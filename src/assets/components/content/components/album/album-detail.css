@@ -89,7 +89,7 @@
 .img-wrapper img{
     display: inline-block;
     width: 100%;
-    height: auto;
+    /*height: auto;*/
     transition: all .5s ease;
     -webkit-transition: all .5s ease;
 }
