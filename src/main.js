@@ -171,7 +171,7 @@ Vue.filter('filterTime', function(value) {
 window.blogReqUrl = 'http://www.sharismspace.com/blog_server-0.0.1-SNAPSHOT';   //博客系统服务器地址
 window.userReqUrl = 'http://www.sharismspace.com/user_server-0.0.1-SNAPSHOT';   //用户系统服务器地址
 window.albumReqUrl = 'http://www.sharismspace.com/album_server-0.0.1-SNAPSHOT';  //相册系统服务器地址
-window.fileReqUrl = 'http://118.25.50.160:8080/file_server-0.0.1-SNAPSHOT';   //文件上传系统服务器地址
+window.fileReqUrl = 'http://www.sharismspace.com/file_server-0.0.1-SNAPSHOT';   //文件上传系统服务器地址
 window.resourceReqUrl = 'http://www.sharismspace.com/resource_server-0.0.1-SNAPSHOT' ;  //文件管理系统服务器地址
 window.websiteReqUrl = 'http://www.sharismspace.com/collect_server-0.0.1-SNAPSHOT';  //网站收藏系统服务器地址
 
