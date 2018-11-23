@@ -8,7 +8,7 @@
                 <ul class="blog-list"  v-loading="blogListLoading">
                     <div v-if="!hasBlogList" class="no-blog-list-wrapper">您还没有创建博客，点击右边的创建博客按钮，开启你的博客之旅吧 (｡•̀ᴗ-)✧</div>
                     <li class="blog-item" v-for="(item,key) in blogList" :key="key" :id="item.id">
-                        <a :href="'http://www.crazyjialin.com/小蜗牛#/blog/'+item.id" target="_blank">
+                        <a :href="'http://www.crazyjialin.com/骨灰盒的束缚#/blog/'+item.id" target="_blank">
                             <h3 class="blog-title">{{item.blogTitle}}</h3>
                             <p class="blog-abstract">{{item.baseBlog}}</p>
                             <div class="blog-info-wrapper">
